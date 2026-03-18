@@ -1,0 +1,1750 @@
+
+RTOS.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   000000b4  08000000  08000000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         0000097c  080000b4  080000b4  000010b4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       0000000c  08000a30  08000a30  00001a30  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .ARM.extab    00000000  08000a3c  08000a3c  00002004  2**0
+                  CONTENTS, READONLY
+  4 .ARM          00000000  08000a3c  08000a3c  00002004  2**0
+                  CONTENTS, READONLY
+  5 .preinit_array 00000000  08000a3c  08000a3c  00002004  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000a3c  08000a3c  00001a3c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .fini_array   00000004  08000a40  08000a40  00001a40  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .data         00000004  20000000  08000a44  00002000  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          00000334  20000008  08000a48  00002008  2**3
+                  ALLOC
+ 10 ._user_heap_stack 00000604  2000033c  08000a48  0000233c  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000028  00000000  00000000  00002004  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   00000caf  00000000  00000000  0000202c  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 000005a3  00000000  00000000  00002cdb  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_aranges 00000128  00000000  00000000  00003280  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_rnglists 000000c5  00000000  00000000  000033a8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_macro  0000166a  00000000  00000000  0000346d  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   00001302  00000000  00000000  00004ad7  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    00004cc6  00000000  00000000  00005dd9  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000043  00000000  00000000  0000aa9f  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  0000026c  00000000  00000000  0000aae4  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 21 .debug_line_str 0000005f  00000000  00000000  0000ad50  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+080000b4 <__do_global_dtors_aux>:
+ 80000b4:	b510      	push	{r4, lr}
+ 80000b6:	4c06      	ldr	r4, [pc, #24]	@ (80000d0 <__do_global_dtors_aux+0x1c>)
+ 80000b8:	7823      	ldrb	r3, [r4, #0]
+ 80000ba:	2b00      	cmp	r3, #0
+ 80000bc:	d107      	bne.n	80000ce <__do_global_dtors_aux+0x1a>
+ 80000be:	4b05      	ldr	r3, [pc, #20]	@ (80000d4 <__do_global_dtors_aux+0x20>)
+ 80000c0:	2b00      	cmp	r3, #0
+ 80000c2:	d002      	beq.n	80000ca <__do_global_dtors_aux+0x16>
+ 80000c4:	4804      	ldr	r0, [pc, #16]	@ (80000d8 <__do_global_dtors_aux+0x24>)
+ 80000c6:	e000      	b.n	80000ca <__do_global_dtors_aux+0x16>
+ 80000c8:	bf00      	nop
+ 80000ca:	2301      	movs	r3, #1
+ 80000cc:	7023      	strb	r3, [r4, #0]
+ 80000ce:	bd10      	pop	{r4, pc}
+ 80000d0:	20000008 	.word	0x20000008
+ 80000d4:	00000000 	.word	0x00000000
+ 80000d8:	08000a18 	.word	0x08000a18
+
+080000dc <frame_dummy>:
+ 80000dc:	4b04      	ldr	r3, [pc, #16]	@ (80000f0 <frame_dummy+0x14>)
+ 80000de:	b510      	push	{r4, lr}
+ 80000e0:	2b00      	cmp	r3, #0
+ 80000e2:	d003      	beq.n	80000ec <frame_dummy+0x10>
+ 80000e4:	4903      	ldr	r1, [pc, #12]	@ (80000f4 <frame_dummy+0x18>)
+ 80000e6:	4804      	ldr	r0, [pc, #16]	@ (80000f8 <frame_dummy+0x1c>)
+ 80000e8:	e000      	b.n	80000ec <frame_dummy+0x10>
+ 80000ea:	bf00      	nop
+ 80000ec:	bd10      	pop	{r4, pc}
+ 80000ee:	46c0      	nop			@ (mov r8, r8)
+ 80000f0:	00000000 	.word	0x00000000
+ 80000f4:	2000000c 	.word	0x2000000c
+ 80000f8:	08000a18 	.word	0x08000a18
+
+080000fc <__udivsi3>:
+ 80000fc:	2200      	movs	r2, #0
+ 80000fe:	0843      	lsrs	r3, r0, #1
+ 8000100:	428b      	cmp	r3, r1
+ 8000102:	d374      	bcc.n	80001ee <__udivsi3+0xf2>
+ 8000104:	0903      	lsrs	r3, r0, #4
+ 8000106:	428b      	cmp	r3, r1
+ 8000108:	d35f      	bcc.n	80001ca <__udivsi3+0xce>
+ 800010a:	0a03      	lsrs	r3, r0, #8
+ 800010c:	428b      	cmp	r3, r1
+ 800010e:	d344      	bcc.n	800019a <__udivsi3+0x9e>
+ 8000110:	0b03      	lsrs	r3, r0, #12
+ 8000112:	428b      	cmp	r3, r1
+ 8000114:	d328      	bcc.n	8000168 <__udivsi3+0x6c>
+ 8000116:	0c03      	lsrs	r3, r0, #16
+ 8000118:	428b      	cmp	r3, r1
+ 800011a:	d30d      	bcc.n	8000138 <__udivsi3+0x3c>
+ 800011c:	22ff      	movs	r2, #255	@ 0xff
+ 800011e:	0209      	lsls	r1, r1, #8
+ 8000120:	ba12      	rev	r2, r2
+ 8000122:	0c03      	lsrs	r3, r0, #16
+ 8000124:	428b      	cmp	r3, r1
+ 8000126:	d302      	bcc.n	800012e <__udivsi3+0x32>
+ 8000128:	1212      	asrs	r2, r2, #8
+ 800012a:	0209      	lsls	r1, r1, #8
+ 800012c:	d065      	beq.n	80001fa <__udivsi3+0xfe>
+ 800012e:	0b03      	lsrs	r3, r0, #12
+ 8000130:	428b      	cmp	r3, r1
+ 8000132:	d319      	bcc.n	8000168 <__udivsi3+0x6c>
+ 8000134:	e000      	b.n	8000138 <__udivsi3+0x3c>
+ 8000136:	0a09      	lsrs	r1, r1, #8
+ 8000138:	0bc3      	lsrs	r3, r0, #15
+ 800013a:	428b      	cmp	r3, r1
+ 800013c:	d301      	bcc.n	8000142 <__udivsi3+0x46>
+ 800013e:	03cb      	lsls	r3, r1, #15
+ 8000140:	1ac0      	subs	r0, r0, r3
+ 8000142:	4152      	adcs	r2, r2
+ 8000144:	0b83      	lsrs	r3, r0, #14
+ 8000146:	428b      	cmp	r3, r1
+ 8000148:	d301      	bcc.n	800014e <__udivsi3+0x52>
+ 800014a:	038b      	lsls	r3, r1, #14
+ 800014c:	1ac0      	subs	r0, r0, r3
+ 800014e:	4152      	adcs	r2, r2
+ 8000150:	0b43      	lsrs	r3, r0, #13
+ 8000152:	428b      	cmp	r3, r1
+ 8000154:	d301      	bcc.n	800015a <__udivsi3+0x5e>
+ 8000156:	034b      	lsls	r3, r1, #13
+ 8000158:	1ac0      	subs	r0, r0, r3
+ 800015a:	4152      	adcs	r2, r2
+ 800015c:	0b03      	lsrs	r3, r0, #12
+ 800015e:	428b      	cmp	r3, r1
+ 8000160:	d301      	bcc.n	8000166 <__udivsi3+0x6a>
+ 8000162:	030b      	lsls	r3, r1, #12
+ 8000164:	1ac0      	subs	r0, r0, r3
+ 8000166:	4152      	adcs	r2, r2
+ 8000168:	0ac3      	lsrs	r3, r0, #11
+ 800016a:	428b      	cmp	r3, r1
+ 800016c:	d301      	bcc.n	8000172 <__udivsi3+0x76>
+ 800016e:	02cb      	lsls	r3, r1, #11
+ 8000170:	1ac0      	subs	r0, r0, r3
+ 8000172:	4152      	adcs	r2, r2
+ 8000174:	0a83      	lsrs	r3, r0, #10
+ 8000176:	428b      	cmp	r3, r1
+ 8000178:	d301      	bcc.n	800017e <__udivsi3+0x82>
+ 800017a:	028b      	lsls	r3, r1, #10
+ 800017c:	1ac0      	subs	r0, r0, r3
+ 800017e:	4152      	adcs	r2, r2
+ 8000180:	0a43      	lsrs	r3, r0, #9
+ 8000182:	428b      	cmp	r3, r1
+ 8000184:	d301      	bcc.n	800018a <__udivsi3+0x8e>
+ 8000186:	024b      	lsls	r3, r1, #9
+ 8000188:	1ac0      	subs	r0, r0, r3
+ 800018a:	4152      	adcs	r2, r2
+ 800018c:	0a03      	lsrs	r3, r0, #8
+ 800018e:	428b      	cmp	r3, r1
+ 8000190:	d301      	bcc.n	8000196 <__udivsi3+0x9a>
+ 8000192:	020b      	lsls	r3, r1, #8
+ 8000194:	1ac0      	subs	r0, r0, r3
+ 8000196:	4152      	adcs	r2, r2
+ 8000198:	d2cd      	bcs.n	8000136 <__udivsi3+0x3a>
+ 800019a:	09c3      	lsrs	r3, r0, #7
+ 800019c:	428b      	cmp	r3, r1
+ 800019e:	d301      	bcc.n	80001a4 <__udivsi3+0xa8>
+ 80001a0:	01cb      	lsls	r3, r1, #7
+ 80001a2:	1ac0      	subs	r0, r0, r3
+ 80001a4:	4152      	adcs	r2, r2
+ 80001a6:	0983      	lsrs	r3, r0, #6
+ 80001a8:	428b      	cmp	r3, r1
+ 80001aa:	d301      	bcc.n	80001b0 <__udivsi3+0xb4>
+ 80001ac:	018b      	lsls	r3, r1, #6
+ 80001ae:	1ac0      	subs	r0, r0, r3
+ 80001b0:	4152      	adcs	r2, r2
+ 80001b2:	0943      	lsrs	r3, r0, #5
+ 80001b4:	428b      	cmp	r3, r1
+ 80001b6:	d301      	bcc.n	80001bc <__udivsi3+0xc0>
+ 80001b8:	014b      	lsls	r3, r1, #5
+ 80001ba:	1ac0      	subs	r0, r0, r3
+ 80001bc:	4152      	adcs	r2, r2
+ 80001be:	0903      	lsrs	r3, r0, #4
+ 80001c0:	428b      	cmp	r3, r1
+ 80001c2:	d301      	bcc.n	80001c8 <__udivsi3+0xcc>
+ 80001c4:	010b      	lsls	r3, r1, #4
+ 80001c6:	1ac0      	subs	r0, r0, r3
+ 80001c8:	4152      	adcs	r2, r2
+ 80001ca:	08c3      	lsrs	r3, r0, #3
+ 80001cc:	428b      	cmp	r3, r1
+ 80001ce:	d301      	bcc.n	80001d4 <__udivsi3+0xd8>
+ 80001d0:	00cb      	lsls	r3, r1, #3
+ 80001d2:	1ac0      	subs	r0, r0, r3
+ 80001d4:	4152      	adcs	r2, r2
+ 80001d6:	0883      	lsrs	r3, r0, #2
+ 80001d8:	428b      	cmp	r3, r1
+ 80001da:	d301      	bcc.n	80001e0 <__udivsi3+0xe4>
+ 80001dc:	008b      	lsls	r3, r1, #2
+ 80001de:	1ac0      	subs	r0, r0, r3
+ 80001e0:	4152      	adcs	r2, r2
+ 80001e2:	0843      	lsrs	r3, r0, #1
+ 80001e4:	428b      	cmp	r3, r1
+ 80001e6:	d301      	bcc.n	80001ec <__udivsi3+0xf0>
+ 80001e8:	004b      	lsls	r3, r1, #1
+ 80001ea:	1ac0      	subs	r0, r0, r3
+ 80001ec:	4152      	adcs	r2, r2
+ 80001ee:	1a41      	subs	r1, r0, r1
+ 80001f0:	d200      	bcs.n	80001f4 <__udivsi3+0xf8>
+ 80001f2:	4601      	mov	r1, r0
+ 80001f4:	4152      	adcs	r2, r2
+ 80001f6:	4610      	mov	r0, r2
+ 80001f8:	4770      	bx	lr
+ 80001fa:	e7ff      	b.n	80001fc <__udivsi3+0x100>
+ 80001fc:	b501      	push	{r0, lr}
+ 80001fe:	2000      	movs	r0, #0
+ 8000200:	f000 f8f0 	bl	80003e4 <__aeabi_idiv0>
+ 8000204:	bd02      	pop	{r1, pc}
+ 8000206:	46c0      	nop			@ (mov r8, r8)
+
+08000208 <__aeabi_uidivmod>:
+ 8000208:	2900      	cmp	r1, #0
+ 800020a:	d0f7      	beq.n	80001fc <__udivsi3+0x100>
+ 800020c:	e776      	b.n	80000fc <__udivsi3>
+ 800020e:	4770      	bx	lr
+
+08000210 <__divsi3>:
+ 8000210:	4603      	mov	r3, r0
+ 8000212:	430b      	orrs	r3, r1
+ 8000214:	d47f      	bmi.n	8000316 <__divsi3+0x106>
+ 8000216:	2200      	movs	r2, #0
+ 8000218:	0843      	lsrs	r3, r0, #1
+ 800021a:	428b      	cmp	r3, r1
+ 800021c:	d374      	bcc.n	8000308 <__divsi3+0xf8>
+ 800021e:	0903      	lsrs	r3, r0, #4
+ 8000220:	428b      	cmp	r3, r1
+ 8000222:	d35f      	bcc.n	80002e4 <__divsi3+0xd4>
+ 8000224:	0a03      	lsrs	r3, r0, #8
+ 8000226:	428b      	cmp	r3, r1
+ 8000228:	d344      	bcc.n	80002b4 <__divsi3+0xa4>
+ 800022a:	0b03      	lsrs	r3, r0, #12
+ 800022c:	428b      	cmp	r3, r1
+ 800022e:	d328      	bcc.n	8000282 <__divsi3+0x72>
+ 8000230:	0c03      	lsrs	r3, r0, #16
+ 8000232:	428b      	cmp	r3, r1
+ 8000234:	d30d      	bcc.n	8000252 <__divsi3+0x42>
+ 8000236:	22ff      	movs	r2, #255	@ 0xff
+ 8000238:	0209      	lsls	r1, r1, #8
+ 800023a:	ba12      	rev	r2, r2
+ 800023c:	0c03      	lsrs	r3, r0, #16
+ 800023e:	428b      	cmp	r3, r1
+ 8000240:	d302      	bcc.n	8000248 <__divsi3+0x38>
+ 8000242:	1212      	asrs	r2, r2, #8
+ 8000244:	0209      	lsls	r1, r1, #8
+ 8000246:	d065      	beq.n	8000314 <__divsi3+0x104>
+ 8000248:	0b03      	lsrs	r3, r0, #12
+ 800024a:	428b      	cmp	r3, r1
+ 800024c:	d319      	bcc.n	8000282 <__divsi3+0x72>
+ 800024e:	e000      	b.n	8000252 <__divsi3+0x42>
+ 8000250:	0a09      	lsrs	r1, r1, #8
+ 8000252:	0bc3      	lsrs	r3, r0, #15
+ 8000254:	428b      	cmp	r3, r1
+ 8000256:	d301      	bcc.n	800025c <__divsi3+0x4c>
+ 8000258:	03cb      	lsls	r3, r1, #15
+ 800025a:	1ac0      	subs	r0, r0, r3
+ 800025c:	4152      	adcs	r2, r2
+ 800025e:	0b83      	lsrs	r3, r0, #14
+ 8000260:	428b      	cmp	r3, r1
+ 8000262:	d301      	bcc.n	8000268 <__divsi3+0x58>
+ 8000264:	038b      	lsls	r3, r1, #14
+ 8000266:	1ac0      	subs	r0, r0, r3
+ 8000268:	4152      	adcs	r2, r2
+ 800026a:	0b43      	lsrs	r3, r0, #13
+ 800026c:	428b      	cmp	r3, r1
+ 800026e:	d301      	bcc.n	8000274 <__divsi3+0x64>
+ 8000270:	034b      	lsls	r3, r1, #13
+ 8000272:	1ac0      	subs	r0, r0, r3
+ 8000274:	4152      	adcs	r2, r2
+ 8000276:	0b03      	lsrs	r3, r0, #12
+ 8000278:	428b      	cmp	r3, r1
+ 800027a:	d301      	bcc.n	8000280 <__divsi3+0x70>
+ 800027c:	030b      	lsls	r3, r1, #12
+ 800027e:	1ac0      	subs	r0, r0, r3
+ 8000280:	4152      	adcs	r2, r2
+ 8000282:	0ac3      	lsrs	r3, r0, #11
+ 8000284:	428b      	cmp	r3, r1
+ 8000286:	d301      	bcc.n	800028c <__divsi3+0x7c>
+ 8000288:	02cb      	lsls	r3, r1, #11
+ 800028a:	1ac0      	subs	r0, r0, r3
+ 800028c:	4152      	adcs	r2, r2
+ 800028e:	0a83      	lsrs	r3, r0, #10
+ 8000290:	428b      	cmp	r3, r1
+ 8000292:	d301      	bcc.n	8000298 <__divsi3+0x88>
+ 8000294:	028b      	lsls	r3, r1, #10
+ 8000296:	1ac0      	subs	r0, r0, r3
+ 8000298:	4152      	adcs	r2, r2
+ 800029a:	0a43      	lsrs	r3, r0, #9
+ 800029c:	428b      	cmp	r3, r1
+ 800029e:	d301      	bcc.n	80002a4 <__divsi3+0x94>
+ 80002a0:	024b      	lsls	r3, r1, #9
+ 80002a2:	1ac0      	subs	r0, r0, r3
+ 80002a4:	4152      	adcs	r2, r2
+ 80002a6:	0a03      	lsrs	r3, r0, #8
+ 80002a8:	428b      	cmp	r3, r1
+ 80002aa:	d301      	bcc.n	80002b0 <__divsi3+0xa0>
+ 80002ac:	020b      	lsls	r3, r1, #8
+ 80002ae:	1ac0      	subs	r0, r0, r3
+ 80002b0:	4152      	adcs	r2, r2
+ 80002b2:	d2cd      	bcs.n	8000250 <__divsi3+0x40>
+ 80002b4:	09c3      	lsrs	r3, r0, #7
+ 80002b6:	428b      	cmp	r3, r1
+ 80002b8:	d301      	bcc.n	80002be <__divsi3+0xae>
+ 80002ba:	01cb      	lsls	r3, r1, #7
+ 80002bc:	1ac0      	subs	r0, r0, r3
+ 80002be:	4152      	adcs	r2, r2
+ 80002c0:	0983      	lsrs	r3, r0, #6
+ 80002c2:	428b      	cmp	r3, r1
+ 80002c4:	d301      	bcc.n	80002ca <__divsi3+0xba>
+ 80002c6:	018b      	lsls	r3, r1, #6
+ 80002c8:	1ac0      	subs	r0, r0, r3
+ 80002ca:	4152      	adcs	r2, r2
+ 80002cc:	0943      	lsrs	r3, r0, #5
+ 80002ce:	428b      	cmp	r3, r1
+ 80002d0:	d301      	bcc.n	80002d6 <__divsi3+0xc6>
+ 80002d2:	014b      	lsls	r3, r1, #5
+ 80002d4:	1ac0      	subs	r0, r0, r3
+ 80002d6:	4152      	adcs	r2, r2
+ 80002d8:	0903      	lsrs	r3, r0, #4
+ 80002da:	428b      	cmp	r3, r1
+ 80002dc:	d301      	bcc.n	80002e2 <__divsi3+0xd2>
+ 80002de:	010b      	lsls	r3, r1, #4
+ 80002e0:	1ac0      	subs	r0, r0, r3
+ 80002e2:	4152      	adcs	r2, r2
+ 80002e4:	08c3      	lsrs	r3, r0, #3
+ 80002e6:	428b      	cmp	r3, r1
+ 80002e8:	d301      	bcc.n	80002ee <__divsi3+0xde>
+ 80002ea:	00cb      	lsls	r3, r1, #3
+ 80002ec:	1ac0      	subs	r0, r0, r3
+ 80002ee:	4152      	adcs	r2, r2
+ 80002f0:	0883      	lsrs	r3, r0, #2
+ 80002f2:	428b      	cmp	r3, r1
+ 80002f4:	d301      	bcc.n	80002fa <__divsi3+0xea>
+ 80002f6:	008b      	lsls	r3, r1, #2
+ 80002f8:	1ac0      	subs	r0, r0, r3
+ 80002fa:	4152      	adcs	r2, r2
+ 80002fc:	0843      	lsrs	r3, r0, #1
+ 80002fe:	428b      	cmp	r3, r1
+ 8000300:	d301      	bcc.n	8000306 <__divsi3+0xf6>
+ 8000302:	004b      	lsls	r3, r1, #1
+ 8000304:	1ac0      	subs	r0, r0, r3
+ 8000306:	4152      	adcs	r2, r2
+ 8000308:	1a41      	subs	r1, r0, r1
+ 800030a:	d200      	bcs.n	800030e <__divsi3+0xfe>
+ 800030c:	4601      	mov	r1, r0
+ 800030e:	4152      	adcs	r2, r2
+ 8000310:	4610      	mov	r0, r2
+ 8000312:	4770      	bx	lr
+ 8000314:	e05d      	b.n	80003d2 <__divsi3+0x1c2>
+ 8000316:	0fca      	lsrs	r2, r1, #31
+ 8000318:	d000      	beq.n	800031c <__divsi3+0x10c>
+ 800031a:	4249      	negs	r1, r1
+ 800031c:	1003      	asrs	r3, r0, #32
+ 800031e:	d300      	bcc.n	8000322 <__divsi3+0x112>
+ 8000320:	4240      	negs	r0, r0
+ 8000322:	4053      	eors	r3, r2
+ 8000324:	2200      	movs	r2, #0
+ 8000326:	469c      	mov	ip, r3
+ 8000328:	0903      	lsrs	r3, r0, #4
+ 800032a:	428b      	cmp	r3, r1
+ 800032c:	d32d      	bcc.n	800038a <__divsi3+0x17a>
+ 800032e:	0a03      	lsrs	r3, r0, #8
+ 8000330:	428b      	cmp	r3, r1
+ 8000332:	d312      	bcc.n	800035a <__divsi3+0x14a>
+ 8000334:	22fc      	movs	r2, #252	@ 0xfc
+ 8000336:	0189      	lsls	r1, r1, #6
+ 8000338:	ba12      	rev	r2, r2
+ 800033a:	0a03      	lsrs	r3, r0, #8
+ 800033c:	428b      	cmp	r3, r1
+ 800033e:	d30c      	bcc.n	800035a <__divsi3+0x14a>
+ 8000340:	0189      	lsls	r1, r1, #6
+ 8000342:	1192      	asrs	r2, r2, #6
+ 8000344:	428b      	cmp	r3, r1
+ 8000346:	d308      	bcc.n	800035a <__divsi3+0x14a>
+ 8000348:	0189      	lsls	r1, r1, #6
+ 800034a:	1192      	asrs	r2, r2, #6
+ 800034c:	428b      	cmp	r3, r1
+ 800034e:	d304      	bcc.n	800035a <__divsi3+0x14a>
+ 8000350:	0189      	lsls	r1, r1, #6
+ 8000352:	d03a      	beq.n	80003ca <__divsi3+0x1ba>
+ 8000354:	1192      	asrs	r2, r2, #6
+ 8000356:	e000      	b.n	800035a <__divsi3+0x14a>
+ 8000358:	0989      	lsrs	r1, r1, #6
+ 800035a:	09c3      	lsrs	r3, r0, #7
+ 800035c:	428b      	cmp	r3, r1
+ 800035e:	d301      	bcc.n	8000364 <__divsi3+0x154>
+ 8000360:	01cb      	lsls	r3, r1, #7
+ 8000362:	1ac0      	subs	r0, r0, r3
+ 8000364:	4152      	adcs	r2, r2
+ 8000366:	0983      	lsrs	r3, r0, #6
+ 8000368:	428b      	cmp	r3, r1
+ 800036a:	d301      	bcc.n	8000370 <__divsi3+0x160>
+ 800036c:	018b      	lsls	r3, r1, #6
+ 800036e:	1ac0      	subs	r0, r0, r3
+ 8000370:	4152      	adcs	r2, r2
+ 8000372:	0943      	lsrs	r3, r0, #5
+ 8000374:	428b      	cmp	r3, r1
+ 8000376:	d301      	bcc.n	800037c <__divsi3+0x16c>
+ 8000378:	014b      	lsls	r3, r1, #5
+ 800037a:	1ac0      	subs	r0, r0, r3
+ 800037c:	4152      	adcs	r2, r2
+ 800037e:	0903      	lsrs	r3, r0, #4
+ 8000380:	428b      	cmp	r3, r1
+ 8000382:	d301      	bcc.n	8000388 <__divsi3+0x178>
+ 8000384:	010b      	lsls	r3, r1, #4
+ 8000386:	1ac0      	subs	r0, r0, r3
+ 8000388:	4152      	adcs	r2, r2
+ 800038a:	08c3      	lsrs	r3, r0, #3
+ 800038c:	428b      	cmp	r3, r1
+ 800038e:	d301      	bcc.n	8000394 <__divsi3+0x184>
+ 8000390:	00cb      	lsls	r3, r1, #3
+ 8000392:	1ac0      	subs	r0, r0, r3
+ 8000394:	4152      	adcs	r2, r2
+ 8000396:	0883      	lsrs	r3, r0, #2
+ 8000398:	428b      	cmp	r3, r1
+ 800039a:	d301      	bcc.n	80003a0 <__divsi3+0x190>
+ 800039c:	008b      	lsls	r3, r1, #2
+ 800039e:	1ac0      	subs	r0, r0, r3
+ 80003a0:	4152      	adcs	r2, r2
+ 80003a2:	d2d9      	bcs.n	8000358 <__divsi3+0x148>
+ 80003a4:	0843      	lsrs	r3, r0, #1
+ 80003a6:	428b      	cmp	r3, r1
+ 80003a8:	d301      	bcc.n	80003ae <__divsi3+0x19e>
+ 80003aa:	004b      	lsls	r3, r1, #1
+ 80003ac:	1ac0      	subs	r0, r0, r3
+ 80003ae:	4152      	adcs	r2, r2
+ 80003b0:	1a41      	subs	r1, r0, r1
+ 80003b2:	d200      	bcs.n	80003b6 <__divsi3+0x1a6>
+ 80003b4:	4601      	mov	r1, r0
+ 80003b6:	4663      	mov	r3, ip
+ 80003b8:	4152      	adcs	r2, r2
+ 80003ba:	105b      	asrs	r3, r3, #1
+ 80003bc:	4610      	mov	r0, r2
+ 80003be:	d301      	bcc.n	80003c4 <__divsi3+0x1b4>
+ 80003c0:	4240      	negs	r0, r0
+ 80003c2:	2b00      	cmp	r3, #0
+ 80003c4:	d500      	bpl.n	80003c8 <__divsi3+0x1b8>
+ 80003c6:	4249      	negs	r1, r1
+ 80003c8:	4770      	bx	lr
+ 80003ca:	4663      	mov	r3, ip
+ 80003cc:	105b      	asrs	r3, r3, #1
+ 80003ce:	d300      	bcc.n	80003d2 <__divsi3+0x1c2>
+ 80003d0:	4240      	negs	r0, r0
+ 80003d2:	b501      	push	{r0, lr}
+ 80003d4:	2000      	movs	r0, #0
+ 80003d6:	f000 f805 	bl	80003e4 <__aeabi_idiv0>
+ 80003da:	bd02      	pop	{r1, pc}
+
+080003dc <__aeabi_idivmod>:
+ 80003dc:	2900      	cmp	r1, #0
+ 80003de:	d0f8      	beq.n	80003d2 <__divsi3+0x1c2>
+ 80003e0:	e716      	b.n	8000210 <__divsi3>
+ 80003e2:	4770      	bx	lr
+
+080003e4 <__aeabi_idiv0>:
+ 80003e4:	4770      	bx	lr
+ 80003e6:	46c0      	nop			@ (mov r8, r8)
+
+080003e8 <SystemClock_Config>:
+ * SystemClock_Config
+ *
+ * Configure SYSCLK = HSI48 / 1 = 48 MHz (maximum for this device).
+ * ------------------------------------------------------------------------- */
+void SystemClock_Config(void)
+{
+ 80003e8:	b580      	push	{r7, lr}
+ 80003ea:	b082      	sub	sp, #8
+ 80003ec:	af00      	add	r7, sp, #0
+     * that writes the wait state.
+     *
+     * ACR.LATENCY = 1 → 1 wait state (required for 24 MHz < f ≤ 48 MHz)
+     * ACR.PRFTEN  = 1 → enable prefetch buffer (improves throughput)
+     */
+    uint32_t acr = FLASH->ACR;
+ 80003ee:	4b1c      	ldr	r3, [pc, #112]	@ (8000460 <SystemClock_Config+0x78>)
+ 80003f0:	681b      	ldr	r3, [r3, #0]
+ 80003f2:	607b      	str	r3, [r7, #4]
+    acr &= ~FLASH_ACR_LATENCY_Msk;
+ 80003f4:	687b      	ldr	r3, [r7, #4]
+ 80003f6:	2207      	movs	r2, #7
+ 80003f8:	4393      	bics	r3, r2
+ 80003fa:	607b      	str	r3, [r7, #4]
+    acr |=  FLASH_ACR_LATENCY_1WS;
+ 80003fc:	687b      	ldr	r3, [r7, #4]
+ 80003fe:	2201      	movs	r2, #1
+ 8000400:	4313      	orrs	r3, r2
+ 8000402:	607b      	str	r3, [r7, #4]
+    acr |=  FLASH_ACR_PRFTEN_Msk;
+ 8000404:	687b      	ldr	r3, [r7, #4]
+ 8000406:	2280      	movs	r2, #128	@ 0x80
+ 8000408:	0052      	lsls	r2, r2, #1
+ 800040a:	4313      	orrs	r3, r2
+ 800040c:	607b      	str	r3, [r7, #4]
+    FLASH->ACR = acr;
+ 800040e:	4b14      	ldr	r3, [pc, #80]	@ (8000460 <SystemClock_Config+0x78>)
+ 8000410:	687a      	ldr	r2, [r7, #4]
+ 8000412:	601a      	str	r2, [r3, #0]
+
+    /* Confirm the write took effect before touching the clock */
+    while ((FLASH->ACR & FLASH_ACR_LATENCY_Msk) != FLASH_ACR_LATENCY_1WS) {}
+ 8000414:	46c0      	nop			@ (mov r8, r8)
+ 8000416:	4b12      	ldr	r3, [pc, #72]	@ (8000460 <SystemClock_Config+0x78>)
+ 8000418:	681b      	ldr	r3, [r3, #0]
+ 800041a:	2207      	movs	r2, #7
+ 800041c:	4013      	ands	r3, r2
+ 800041e:	2b01      	cmp	r3, #1
+ 8000420:	d1f9      	bne.n	8000416 <SystemClock_Config+0x2e>
+     * HSIDIV lives at bits [13:11] of RCC_CR.  Clearing those bits sets
+     * the divider to /1, giving us HSI = 48 MHz.
+     *
+     * HSION (bit 8) is already set at reset; we leave it set.
+     */
+    uint32_t cr = RCC->CR;
+ 8000422:	4b10      	ldr	r3, [pc, #64]	@ (8000464 <SystemClock_Config+0x7c>)
+ 8000424:	681b      	ldr	r3, [r3, #0]
+ 8000426:	603b      	str	r3, [r7, #0]
+    cr &= ~RCC_CR_HSIDIV_Msk;       /* Clear divider → /1  */
+ 8000428:	683b      	ldr	r3, [r7, #0]
+ 800042a:	4a0f      	ldr	r2, [pc, #60]	@ (8000468 <SystemClock_Config+0x80>)
+ 800042c:	4013      	ands	r3, r2
+ 800042e:	603b      	str	r3, [r7, #0]
+    RCC->CR = cr;
+ 8000430:	4b0c      	ldr	r3, [pc, #48]	@ (8000464 <SystemClock_Config+0x7c>)
+ 8000432:	683a      	ldr	r2, [r7, #0]
+ 8000434:	601a      	str	r2, [r3, #0]
+    /* --- Step 3: wait for the HSI to re-lock at the new frequency ---
+     *
+     * HSIRDY (bit 10) goes low briefly when we change the divider, then
+     * rises again once the oscillator is stable.
+     */
+    while (!(RCC->CR & RCC_CR_HSIRDY_Msk)) {}
+ 8000436:	46c0      	nop			@ (mov r8, r8)
+ 8000438:	4b0a      	ldr	r3, [pc, #40]	@ (8000464 <SystemClock_Config+0x7c>)
+ 800043a:	681a      	ldr	r2, [r3, #0]
+ 800043c:	2380      	movs	r3, #128	@ 0x80
+ 800043e:	00db      	lsls	r3, r3, #3
+ 8000440:	4013      	ands	r3, r2
+ 8000442:	d0f9      	beq.n	8000438 <SystemClock_Config+0x50>
+    /* --- Step 4: SYSCLK is already sourced from HSI (SWS = 000 = HSI) ---
+     *
+     * On this device there is no PLL, so no clock switch is needed.
+     * We just confirm SWS still shows HSI.
+     */
+    while ((RCC->CFGR & RCC_CFGR_SWS_Msk) != RCC_CFGR_SWS_HSI) {}
+ 8000444:	46c0      	nop			@ (mov r8, r8)
+ 8000446:	4b07      	ldr	r3, [pc, #28]	@ (8000464 <SystemClock_Config+0x7c>)
+ 8000448:	689b      	ldr	r3, [r3, #8]
+ 800044a:	2238      	movs	r2, #56	@ 0x38
+ 800044c:	4013      	ands	r3, r2
+ 800044e:	d1fa      	bne.n	8000446 <SystemClock_Config+0x5e>
+
+    /* Update the global variable so SysTick_Init() knows the true frequency */
+    SystemCoreClock = 48000000UL;
+ 8000450:	4b06      	ldr	r3, [pc, #24]	@ (800046c <SystemClock_Config+0x84>)
+ 8000452:	4a07      	ldr	r2, [pc, #28]	@ (8000470 <SystemClock_Config+0x88>)
+ 8000454:	601a      	str	r2, [r3, #0]
+}
+ 8000456:	46c0      	nop			@ (mov r8, r8)
+ 8000458:	46bd      	mov	sp, r7
+ 800045a:	b002      	add	sp, #8
+ 800045c:	bd80      	pop	{r7, pc}
+ 800045e:	46c0      	nop			@ (mov r8, r8)
+ 8000460:	40022000 	.word	0x40022000
+ 8000464:	40021000 	.word	0x40021000
+ 8000468:	ffffc7ff 	.word	0xffffc7ff
+ 800046c:	20000000 	.word	0x20000000
+ 8000470:	02dc6c00 	.word	0x02dc6c00
+
+08000474 <GPIO_Init>:
+ * GPIO_Init
+ *
+ * Enable GPIOA clock and configure PA5 as push-pull output (Nucleo LED).
+ * ------------------------------------------------------------------------- */
+void GPIO_Init(void)
+{
+ 8000474:	b580      	push	{r7, lr}
+ 8000476:	b082      	sub	sp, #8
+ 8000478:	af00      	add	r7, sp, #0
+    /* Enable GPIOA peripheral clock via RCC_IOPENR */
+    RCC->IOPENR |= RCC_IOPENR_GPIOAEN_Msk;
+ 800047a:	4b1d      	ldr	r3, [pc, #116]	@ (80004f0 <GPIO_Init+0x7c>)
+ 800047c:	6b5a      	ldr	r2, [r3, #52]	@ 0x34
+ 800047e:	4b1c      	ldr	r3, [pc, #112]	@ (80004f0 <GPIO_Init+0x7c>)
+ 8000480:	2101      	movs	r1, #1
+ 8000482:	430a      	orrs	r2, r1
+ 8000484:	635a      	str	r2, [r3, #52]	@ 0x34
+
+    /* Short delay to let the clock gate open (at least 1 bus cycle) */
+    (void)RCC->IOPENR;
+ 8000486:	4b1a      	ldr	r3, [pc, #104]	@ (80004f0 <GPIO_Init+0x7c>)
+ 8000488:	6b5b      	ldr	r3, [r3, #52]	@ 0x34
+     * MODER is reset to 0xEBFF_FFFF for GPIOA (most pins are analog).
+     * We must clear both mode bits for pin 5 then set the output bit.
+     *
+     * Pin 5 → MODER field starts at bit (5 * 2) = 10.
+     */
+    uint32_t moder = GPIOA->MODER;
+ 800048a:	23a0      	movs	r3, #160	@ 0xa0
+ 800048c:	05db      	lsls	r3, r3, #23
+ 800048e:	681b      	ldr	r3, [r3, #0]
+ 8000490:	607b      	str	r3, [r7, #4]
+    moder &= ~(0x3U << (LED_PIN * 2));          /* Clear bits [11:10] */
+ 8000492:	687b      	ldr	r3, [r7, #4]
+ 8000494:	4a17      	ldr	r2, [pc, #92]	@ (80004f4 <GPIO_Init+0x80>)
+ 8000496:	4013      	ands	r3, r2
+ 8000498:	607b      	str	r3, [r7, #4]
+    moder |=  (GPIO_MODER_OUTPUT << (LED_PIN * 2)); /* Set output mode  */
+ 800049a:	687b      	ldr	r3, [r7, #4]
+ 800049c:	2280      	movs	r2, #128	@ 0x80
+ 800049e:	00d2      	lsls	r2, r2, #3
+ 80004a0:	4313      	orrs	r3, r2
+ 80004a2:	607b      	str	r3, [r7, #4]
+    GPIOA->MODER = moder;
+ 80004a4:	23a0      	movs	r3, #160	@ 0xa0
+ 80004a6:	05db      	lsls	r3, r3, #23
+ 80004a8:	687a      	ldr	r2, [r7, #4]
+ 80004aa:	601a      	str	r2, [r3, #0]
+
+    /* Output type: push-pull (OTYPER bit 5 = 0, which is already the reset
+     * value, so no explicit write is needed — but we'll be explicit) */
+    GPIOA->OTYPER &= ~(0x1U << LED_PIN);
+ 80004ac:	23a0      	movs	r3, #160	@ 0xa0
+ 80004ae:	05db      	lsls	r3, r3, #23
+ 80004b0:	685a      	ldr	r2, [r3, #4]
+ 80004b2:	23a0      	movs	r3, #160	@ 0xa0
+ 80004b4:	05db      	lsls	r3, r3, #23
+ 80004b6:	2120      	movs	r1, #32
+ 80004b8:	438a      	bics	r2, r1
+ 80004ba:	605a      	str	r2, [r3, #4]
+
+    /* Output speed: low speed (OSPEEDR bits [11:10] = 00, already reset) */
+    GPIOA->OSPEEDR &= ~(0x3U << (LED_PIN * 2));
+ 80004bc:	23a0      	movs	r3, #160	@ 0xa0
+ 80004be:	05db      	lsls	r3, r3, #23
+ 80004c0:	689a      	ldr	r2, [r3, #8]
+ 80004c2:	23a0      	movs	r3, #160	@ 0xa0
+ 80004c4:	05db      	lsls	r3, r3, #23
+ 80004c6:	490b      	ldr	r1, [pc, #44]	@ (80004f4 <GPIO_Init+0x80>)
+ 80004c8:	400a      	ands	r2, r1
+ 80004ca:	609a      	str	r2, [r3, #8]
+
+    /* No pull-up/pull-down (PUPDR bits [11:10] = 00, already reset) */
+    GPIOA->PUPDR &= ~(0x3U << (LED_PIN * 2));
+ 80004cc:	23a0      	movs	r3, #160	@ 0xa0
+ 80004ce:	05db      	lsls	r3, r3, #23
+ 80004d0:	68da      	ldr	r2, [r3, #12]
+ 80004d2:	23a0      	movs	r3, #160	@ 0xa0
+ 80004d4:	05db      	lsls	r3, r3, #23
+ 80004d6:	4907      	ldr	r1, [pc, #28]	@ (80004f4 <GPIO_Init+0x80>)
+ 80004d8:	400a      	ands	r2, r1
+ 80004da:	60da      	str	r2, [r3, #12]
+
+    /* Start with LED off */
+    GPIO_CLR(LED_PORT, LED_PIN);
+ 80004dc:	23a0      	movs	r3, #160	@ 0xa0
+ 80004de:	05db      	lsls	r3, r3, #23
+ 80004e0:	2280      	movs	r2, #128	@ 0x80
+ 80004e2:	0392      	lsls	r2, r2, #14
+ 80004e4:	619a      	str	r2, [r3, #24]
+}
+ 80004e6:	46c0      	nop			@ (mov r8, r8)
+ 80004e8:	46bd      	mov	sp, r7
+ 80004ea:	b002      	add	sp, #8
+ 80004ec:	bd80      	pop	{r7, pc}
+ 80004ee:	46c0      	nop			@ (mov r8, r8)
+ 80004f0:	40021000 	.word	0x40021000
+ 80004f4:	fffff3ff 	.word	0xfffff3ff
+
+080004f8 <PendSV_Handler>:
+    .section .text.PendSV_Handler, "ax", %progbits
+    .type   PendSV_Handler, %function
+
+PendSV_Handler:
+
+    CPSID   I                       /* Disable interrupts for atomic switch  */
+ 80004f8:	b672      	cpsid	i
+
+    /* -----------------------------------------------------------------------
+     * First-switch guard: skip saving the bootstrap context.
+     * ----------------------------------------------------------------------- */
+    LDR     R0, =rtos_started
+ 80004fa:	4814      	ldr	r0, [pc, #80]	@ (800054c <pendsv_restore+0x2a>)
+    LDRB    R1, [R0]
+ 80004fc:	7801      	ldrb	r1, [r0, #0]
+    CMP     R1, #0
+ 80004fe:	2900      	cmp	r1, #0
+    BNE     pendsv_save             /* Non-zero → normal save/restore        */
+ 8000500:	d102      	bne.n	8000508 <pendsv_save>
+
+    MOVS    R1, #1
+ 8000502:	2101      	movs	r1, #1
+    STRB    R1, [R0]                /* rtos_started = 1                      */
+ 8000504:	7001      	strb	r1, [r0, #0]
+    B       pendsv_restore          /* Jump straight to loading the first task*/
+ 8000506:	e00c      	b.n	8000522 <pendsv_restore>
+
+08000508 <pendsv_save>:
+     * onto the PSP.  PSP now points to the R0 slot.  We push R4-R11 by
+     * decrementing PSP by 32 and writing with STMIA.
+     * ----------------------------------------------------------------------- */
+pendsv_save:
+
+    MRS     R0, PSP                 /* R0 = outgoing PSP (→ top of hw frame) */
+ 8000508:	f3ef 8009 	mrs	r0, PSP
+    SUBS    R0, R0, #32             /* R0 = PSP - 32  (new TCB->sp)          */
+ 800050c:	3820      	subs	r0, #32
+
+    STMIA   R0!, {R4-R7}            /* Store R4-R7 at [R0+0 .. R0+12]        */
+ 800050e:	c0f0      	stmia	r0!, {r4, r5, r6, r7}
+                                    /* R0 is now PSP - 16                    */
+
+    MOV     R4, R8                  /* M0+ cannot STMIA high registers       */
+ 8000510:	4644      	mov	r4, r8
+    MOV     R5, R9                  /* directly — copy to R4-R7 first        */
+ 8000512:	464d      	mov	r5, r9
+    MOV     R6, R10
+ 8000514:	4656      	mov	r6, sl
+    MOV     R7, R11
+ 8000516:	465f      	mov	r7, fp
+    STMIA   R0!, {R4-R7}            /* Store R8-R11 at [R0+0 .. R0+12]       */
+ 8000518:	c0f0      	stmia	r0!, {r4, r5, r6, r7}
+                                    /* R0 is now PSP (back to hw frame base) */
+
+    SUBS    R0, R0, #32             /* R0 = new TCB->sp = PSP - 32           */
+ 800051a:	3820      	subs	r0, #32
+
+    LDR     R1, =current_task       /* R1 = &current_task                    */
+ 800051c:	490c      	ldr	r1, [pc, #48]	@ (8000550 <pendsv_restore+0x2e>)
+    LDR     R1, [R1]                /* R1 = current_task (TCB pointer)       */
+ 800051e:	6809      	ldr	r1, [r1, #0]
+    STR     R0, [R1, #0]            /* TCB->sp = R0  (sp is at offset 0)     */
+ 8000520:	6008      	str	r0, [r1, #0]
+
+08000522 <pendsv_restore>:
+     * EXC_RETURN value (0xFFFFFFFD) that we need for the final BX LR.
+     * Save it on MSP (handler mode stack) first.
+     * ----------------------------------------------------------------------- */
+pendsv_restore:
+
+    PUSH    {LR}                    /* Save EXC_RETURN onto MSP              */
+ 8000522:	b500      	push	{lr}
+    BL      os_schedule             /* current_task = next READY task        */
+ 8000524:	f000 f9cc 	bl	80008c0 <os_schedule>
+    POP     {R4}                    /* Pop saved EXC_RETURN into R4          */
+ 8000528:	bc10      	pop	{r4}
+    MOV     LR, R4                  /* Restore EXC_RETURN to LR (MOV allows high-reg dst) */
+ 800052a:	46a6      	mov	lr, r4
+     *
+     * We restore R8-R11 first (through R4-R7 temporaries), then R4-R7.
+     * This avoids clobbering R4-R7 before their correct values are loaded.
+     * ----------------------------------------------------------------------- */
+
+    LDR     R1, =current_task
+ 800052c:	4908      	ldr	r1, [pc, #32]	@ (8000550 <pendsv_restore+0x2e>)
+    LDR     R1, [R1]                /* R1 = new current_task                 */
+ 800052e:	6809      	ldr	r1, [r1, #0]
+    LDR     R0, [R1, #0]            /* R0 = new TCB->sp                      */
+ 8000530:	6808      	ldr	r0, [r1, #0]
+
+    /* Step A: load saved R8-R11 (at offsets +16..+28) into R4-R7 as temps  */
+    ADDS    R0, R0, #16             /* R0 → saved-R8 slot                    */
+ 8000532:	3010      	adds	r0, #16
+    LDMIA   R0!, {R4-R7}            /* R4=sv_R8 R5=sv_R9 R6=sv_R10 R7=sv_R11 */
+ 8000534:	c8f0      	ldmia	r0!, {r4, r5, r6, r7}
+                                    /* R0 now = TCB->sp + 32 (hw frame base) */
+    MOV     R8,  R4
+ 8000536:	46a0      	mov	r8, r4
+    MOV     R9,  R5
+ 8000538:	46a9      	mov	r9, r5
+    MOV     R10, R6
+ 800053a:	46b2      	mov	sl, r6
+    MOV     R11, R7
+ 800053c:	46bb      	mov	fp, r7
+
+    /* Step B: restore R4-R7 from offsets +0..+12 (back up to TCB->sp)      */
+    SUBS    R0, R0, #32             /* R0 = TCB->sp again                    */
+ 800053e:	3820      	subs	r0, #32
+    LDMIA   R0!, {R4-R7}            /* Restore R4-R7; R0 advances to sp+16   */
+ 8000540:	c8f0      	ldmia	r0!, {r4, r5, r6, r7}
+
+    /* Step C: advance R0 past the R8-R11 save area → base of hw frame      */
+    ADDS    R0, R0, #16             /* R0 = TCB->sp + 32 = hw frame base     */
+ 8000542:	3010      	adds	r0, #16
+
+    MSR     PSP, R0                 /* PSP → new task's hardware frame       */
+ 8000544:	f380 8809 	msr	PSP, r0
+
+    CPSIE   I                       /* Re-enable interrupts                  */
+ 8000548:	b662      	cpsie	i
+     *   → Return to Thread mode
+     *   → Use PSP as stack pointer
+     *   → CPU auto-pops R0, R1, R2, R3, R12, LR, PC, xPSR from PSP
+     *   → PC = task entry (first run) or wherever the task was preempted
+     */
+    BX      LR
+ 800054a:	4770      	bx	lr
+    LDR     R0, =rtos_started
+ 800054c:	20000314 	.word	0x20000314
+    LDR     R1, =current_task       /* R1 = &current_task                    */
+ 8000550:	20000308 	.word	0x20000308
+
+08000554 <_rtos_start>:
+    .type   _rtos_start, %function
+
+_rtos_start:
+
+    /* PSP ← top of scratch buffer                                          */
+    LDR     R0, =os_dummy_stack
+ 8000554:	4808      	ldr	r0, [pc, #32]	@ (8000578 <_rtos_start_spin+0x2>)
+    ADDS    R0, R0, #32             /* Top of 8-word (32-byte) buffer        */
+ 8000556:	3020      	adds	r0, #32
+    MSR     PSP, R0
+ 8000558:	f380 8809 	msr	PSP, r0
+
+    /* Switch thread mode to PSP: CONTROL.SPSEL = 1                        */
+    MOVS    R0, #2
+ 800055c:	2002      	movs	r0, #2
+    MSR     CONTROL, R0
+ 800055e:	f380 8814 	msr	CONTROL, r0
+    ISB                             /* Flush pipeline after CONTROL write    */
+ 8000562:	f3bf 8f6f 	isb	sy
+
+    /* Pend PendSV — it fires immediately since interrupts are enabled      */
+    LDR     R0, =SCB_ICSR_ADDR
+ 8000566:	4805      	ldr	r0, [pc, #20]	@ (800057c <_rtos_start_spin+0x6>)
+    MOVS    R1, #1
+ 8000568:	2101      	movs	r1, #1
+    LSLS    R1, R1, #28             /* R1 = 0x10000000 (PENDSVSET bit)       */
+ 800056a:	0709      	lsls	r1, r1, #28
+    STR     R1, [R0]
+ 800056c:	6001      	str	r1, [r0, #0]
+    DSB                             /* Ensure the store is visible           */
+ 800056e:	f3bf 8f4f 	dsb	sy
+    ISB                             /* PendSV fires here (or at next instr)  */
+ 8000572:	f3bf 8f6f 	isb	sy
+
+08000576 <_rtos_start_spin>:
+
+    /* Safety spin — should never execute                                   */
+_rtos_start_spin:
+    B       _rtos_start_spin
+ 8000576:	e7fe      	b.n	8000576 <_rtos_start_spin>
+    LDR     R0, =os_dummy_stack
+ 8000578:	20000318 	.word	0x20000318
+    LDR     R0, =SCB_ICSR_ADDR
+ 800057c:	e000ed04 	.word	0xe000ed04
+
+08000580 <SysTick_Init>:
+ *
+ * 1 ms tick at 48 MHz. PendSV set to lowest priority so it only fires
+ * after all higher-priority ISRs have returned.
+ * ------------------------------------------------------------------------- */
+static void SysTick_Init(void)
+{
+ 8000580:	b580      	push	{r7, lr}
+ 8000582:	af00      	add	r7, sp, #0
+    SYSTICK->LOAD = (SystemCoreClock / 1000U) - 1U;    /* reload = 47 999   */
+ 8000584:	4b0b      	ldr	r3, [pc, #44]	@ (80005b4 <SysTick_Init+0x34>)
+ 8000586:	681b      	ldr	r3, [r3, #0]
+ 8000588:	22fa      	movs	r2, #250	@ 0xfa
+ 800058a:	0091      	lsls	r1, r2, #2
+ 800058c:	0018      	movs	r0, r3
+ 800058e:	f7ff fdb5 	bl	80000fc <__udivsi3>
+ 8000592:	0003      	movs	r3, r0
+ 8000594:	001a      	movs	r2, r3
+ 8000596:	4b08      	ldr	r3, [pc, #32]	@ (80005b8 <SysTick_Init+0x38>)
+ 8000598:	3a01      	subs	r2, #1
+ 800059a:	605a      	str	r2, [r3, #4]
+    SYSTICK->VAL  = 0U;
+ 800059c:	4b06      	ldr	r3, [pc, #24]	@ (80005b8 <SysTick_Init+0x38>)
+ 800059e:	2200      	movs	r2, #0
+ 80005a0:	609a      	str	r2, [r3, #8]
+    SYSTICK->CTRL = SYSTICK_CTRL_CLKSOURCE_Msk
+ 80005a2:	4b05      	ldr	r3, [pc, #20]	@ (80005b8 <SysTick_Init+0x38>)
+ 80005a4:	2207      	movs	r2, #7
+ 80005a6:	601a      	str	r2, [r3, #0]
+                  | SYSTICK_CTRL_TICKINT_Msk
+                  | SYSTICK_CTRL_ENABLE_Msk;
+
+    /* SHPR3 [31:24] = SysTick prio 0x40, [23:16] = PendSV prio 0xC0       */
+    SCB->SHPR3 = SCB_SHPR3_PENDSV_PRI_LOWEST
+ 80005a8:	4b04      	ldr	r3, [pc, #16]	@ (80005bc <SysTick_Init+0x3c>)
+ 80005aa:	4a05      	ldr	r2, [pc, #20]	@ (80005c0 <SysTick_Init+0x40>)
+ 80005ac:	621a      	str	r2, [r3, #32]
+               | SCB_SHPR3_SYSTICK_PRI_HIGH;
+}
+ 80005ae:	46c0      	nop			@ (mov r8, r8)
+ 80005b0:	46bd      	mov	sp, r7
+ 80005b2:	bd80      	pop	{r7, pc}
+ 80005b4:	20000000 	.word	0x20000000
+ 80005b8:	e000e010 	.word	0xe000e010
+ 80005bc:	e000ed00 	.word	0xe000ed00
+ 80005c0:	40c00000 	.word	0x40c00000
+
+080005c4 <task_led>:
+ *
+ * Blinks the Nucleo user LED (PA5) at 1 Hz.
+ * Demonstrates that the scheduler is preempting and resuming tasks.
+ * ========================================================================= */
+static void task_led(void)
+{
+ 80005c4:	b580      	push	{r7, lr}
+ 80005c6:	af00      	add	r7, sp, #0
+    while (1) {
+        GPIO_SET(LED_PORT, LED_PIN);    /* LED on                            */
+ 80005c8:	23a0      	movs	r3, #160	@ 0xa0
+ 80005ca:	05db      	lsls	r3, r3, #23
+ 80005cc:	2220      	movs	r2, #32
+ 80005ce:	619a      	str	r2, [r3, #24]
+        osDelay(500);                   /* 500 ms — scheduler runs task2 here*/
+ 80005d0:	23fa      	movs	r3, #250	@ 0xfa
+ 80005d2:	005b      	lsls	r3, r3, #1
+ 80005d4:	0018      	movs	r0, r3
+ 80005d6:	f000 f95d 	bl	8000894 <osDelay>
+        GPIO_CLR(LED_PORT, LED_PIN);    /* LED off                           */
+ 80005da:	23a0      	movs	r3, #160	@ 0xa0
+ 80005dc:	05db      	lsls	r3, r3, #23
+ 80005de:	2280      	movs	r2, #128	@ 0x80
+ 80005e0:	0392      	lsls	r2, r2, #14
+ 80005e2:	619a      	str	r2, [r3, #24]
+        osDelay(500);                   /* 500 ms — scheduler runs task2 here*/
+ 80005e4:	23fa      	movs	r3, #250	@ 0xfa
+ 80005e6:	005b      	lsls	r3, r3, #1
+ 80005e8:	0018      	movs	r0, r3
+ 80005ea:	f000 f953 	bl	8000894 <osDelay>
+        GPIO_SET(LED_PORT, LED_PIN);    /* LED on                            */
+ 80005ee:	46c0      	nop			@ (mov r8, r8)
+ 80005f0:	e7ea      	b.n	80005c8 <task_led+0x4>
+	...
+
+080005f4 <task_counter>:
+ * If it increments while the LED is blinking, both tasks are running.
+ * ========================================================================= */
+volatile uint32_t task2_counter = 0;
+
+static void task_counter(void)
+{
+ 80005f4:	b580      	push	{r7, lr}
+ 80005f6:	af00      	add	r7, sp, #0
+    while (1) {
+        task2_counter++;
+ 80005f8:	4b04      	ldr	r3, [pc, #16]	@ (800060c <task_counter+0x18>)
+ 80005fa:	681b      	ldr	r3, [r3, #0]
+ 80005fc:	1c5a      	adds	r2, r3, #1
+ 80005fe:	4b03      	ldr	r3, [pc, #12]	@ (800060c <task_counter+0x18>)
+ 8000600:	601a      	str	r2, [r3, #0]
+        osDelay(10);    /* yield for 10 ms between increments               */
+ 8000602:	200a      	movs	r0, #10
+ 8000604:	f000 f946 	bl	8000894 <osDelay>
+        task2_counter++;
+ 8000608:	46c0      	nop			@ (mov r8, r8)
+ 800060a:	e7f5      	b.n	80005f8 <task_counter+0x4>
+ 800060c:	20000224 	.word	0x20000224
+
+08000610 <main>:
+
+/* =========================================================================
+ * main
+ * ========================================================================= */
+int main(void)
+{
+ 8000610:	b580      	push	{r7, lr}
+ 8000612:	b082      	sub	sp, #8
+ 8000614:	af02      	add	r7, sp, #8
+    /* ---- Hardware init ---- */
+    SystemClock_Config();   /* SYSCLK = 48 MHz                               */
+ 8000616:	f7ff fee7 	bl	80003e8 <SystemClock_Config>
+    GPIO_Init();            /* PA5 = push-pull output, LED off               */
+ 800061a:	f7ff ff2b 	bl	8000474 <GPIO_Init>
+    SysTick_Init();         /* 1 kHz tick, PendSV at lowest priority         */
+ 800061e:	f7ff ffaf 	bl	8000580 <SysTick_Init>
+
+    /* Global interrupts must be enabled before osStart() triggers PendSV.
+     * SysTick_Handler checks rtos_started before touching PendSV, so this
+     * is safe to call before osTaskCreate(). */
+    __CPSIE_I();
+ 8000622:	b662      	cpsie	i
+
+    /* ---- Create tasks ---- */
+    osTaskCreate("led",     task_led,     task_led_stack,   TASK_STACK_WORDS_DEFAULT, 1U);
+ 8000624:	4a0a      	ldr	r2, [pc, #40]	@ (8000650 <main+0x40>)
+ 8000626:	490b      	ldr	r1, [pc, #44]	@ (8000654 <main+0x44>)
+ 8000628:	480b      	ldr	r0, [pc, #44]	@ (8000658 <main+0x48>)
+ 800062a:	2301      	movs	r3, #1
+ 800062c:	9300      	str	r3, [sp, #0]
+ 800062e:	2340      	movs	r3, #64	@ 0x40
+ 8000630:	f000 f8de 	bl	80007f0 <osTaskCreate>
+    osTaskCreate("counter", task_counter, task_count_stack, TASK_STACK_WORDS_DEFAULT, 1U);
+ 8000634:	4a09      	ldr	r2, [pc, #36]	@ (800065c <main+0x4c>)
+ 8000636:	490a      	ldr	r1, [pc, #40]	@ (8000660 <main+0x50>)
+ 8000638:	480a      	ldr	r0, [pc, #40]	@ (8000664 <main+0x54>)
+ 800063a:	2301      	movs	r3, #1
+ 800063c:	9300      	str	r3, [sp, #0]
+ 800063e:	2340      	movs	r3, #64	@ 0x40
+ 8000640:	f000 f8d6 	bl	80007f0 <osTaskCreate>
+
+    /* ---- Start the RTOS (never returns) ---- */
+    osStart();
+ 8000644:	f000 f834 	bl	80006b0 <osStart>
+ 8000648:	2300      	movs	r3, #0
+
+    /* Unreachable */
+}
+ 800064a:	0018      	movs	r0, r3
+ 800064c:	46bd      	mov	sp, r7
+ 800064e:	bd80      	pop	{r7, pc}
+ 8000650:	20000024 	.word	0x20000024
+ 8000654:	080005c5 	.word	0x080005c5
+ 8000658:	08000a30 	.word	0x08000a30
+ 800065c:	20000124 	.word	0x20000124
+ 8000660:	080005f5 	.word	0x080005f5
+ 8000664:	08000a34 	.word	0x08000a34
+
+08000668 <trigger_pendsv>:
+    __asm volatile ("msr control, %0" :: "r" (val) : "memory");
+    __ISB();    /* Required after writing CONTROL */
+}
+
+/* Trigger PendSV (safe to call from both thread and handler mode) */
+static inline void trigger_pendsv(void) {
+ 8000668:	b580      	push	{r7, lr}
+ 800066a:	af00      	add	r7, sp, #0
+    SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
+ 800066c:	4b05      	ldr	r3, [pc, #20]	@ (8000684 <trigger_pendsv+0x1c>)
+ 800066e:	2280      	movs	r2, #128	@ 0x80
+ 8000670:	0552      	lsls	r2, r2, #21
+ 8000672:	605a      	str	r2, [r3, #4]
+    __DSB();
+ 8000674:	f3bf 8f4f 	dsb	sy
+    __ISB();
+ 8000678:	f3bf 8f6f 	isb	sy
+}
+ 800067c:	46c0      	nop			@ (mov r8, r8)
+ 800067e:	46bd      	mov	sp, r7
+ 8000680:	bd80      	pop	{r7, pc}
+ 8000682:	46c0      	nop			@ (mov r8, r8)
+ 8000684:	e000ed00 	.word	0xe000ed00
+
+08000688 <SysTick_Handler>:
+ * Phase 2 : increment sys_tick.
+ * Phase 5 : also scan task_pool for sleeping tasks that should wake.
+ * Phase 5 : also trigger PendSV to time-slice running tasks.
+ * ========================================================================= */
+void SysTick_Handler(void)
+{
+ 8000688:	b580      	push	{r7, lr}
+ 800068a:	af00      	add	r7, sp, #0
+    sys_tick++;
+ 800068c:	4b06      	ldr	r3, [pc, #24]	@ (80006a8 <SysTick_Handler+0x20>)
+ 800068e:	681b      	ldr	r3, [r3, #0]
+ 8000690:	1c5a      	adds	r2, r3, #1
+ 8000692:	4b05      	ldr	r3, [pc, #20]	@ (80006a8 <SysTick_Handler+0x20>)
+ 8000694:	601a      	str	r2, [r3, #0]
+     * PendSV is at the lowest interrupt priority (0xC0) so it fires only
+     * AFTER SysTick returns, never preempting other ISRs mid-execution.
+     *
+     * rtos_started is 0 until the very first PendSV sets it, so we never
+     * touch PendSV before the RTOS bootstrap completes in _rtos_start(). */
+    if (rtos_started) {
+ 8000696:	4b05      	ldr	r3, [pc, #20]	@ (80006ac <SysTick_Handler+0x24>)
+ 8000698:	781b      	ldrb	r3, [r3, #0]
+ 800069a:	2b00      	cmp	r3, #0
+ 800069c:	d001      	beq.n	80006a2 <SysTick_Handler+0x1a>
+        trigger_pendsv();
+ 800069e:	f7ff ffe3 	bl	8000668 <trigger_pendsv>
+    }
+}
+ 80006a2:	46c0      	nop			@ (mov r8, r8)
+ 80006a4:	46bd      	mov	sp, r7
+ 80006a6:	bd80      	pop	{r7, pc}
+ 80006a8:	20000310 	.word	0x20000310
+ 80006ac:	20000314 	.word	0x20000314
+
+080006b0 <osStart>:
+ *        c. Writes PENDSVSET to SCB->ICSR — PendSV fires immediately.
+ *        d. PendSV_Handler sees rtos_started==0, skips the save, calls
+ *           os_schedule(), restores task[0], jumps to its entry function.
+ * ========================================================================= */
+void osStart(void)
+{
+ 80006b0:	b580      	push	{r7, lr}
+ 80006b2:	af00      	add	r7, sp, #0
+    if (task_count > 0U) {
+ 80006b4:	4b0c      	ldr	r3, [pc, #48]	@ (80006e8 <osStart+0x38>)
+ 80006b6:	781b      	ldrb	r3, [r3, #0]
+ 80006b8:	2b00      	cmp	r3, #0
+ 80006ba:	d010      	beq.n	80006de <osStart+0x2e>
+        current_task_index = task_count - 1U;
+ 80006bc:	4b0a      	ldr	r3, [pc, #40]	@ (80006e8 <osStart+0x38>)
+ 80006be:	781b      	ldrb	r3, [r3, #0]
+ 80006c0:	3b01      	subs	r3, #1
+ 80006c2:	b2da      	uxtb	r2, r3
+ 80006c4:	4b09      	ldr	r3, [pc, #36]	@ (80006ec <osStart+0x3c>)
+ 80006c6:	701a      	strb	r2, [r3, #0]
+        current_task       = &task_pool[current_task_index];
+ 80006c8:	4b08      	ldr	r3, [pc, #32]	@ (80006ec <osStart+0x3c>)
+ 80006ca:	781b      	ldrb	r3, [r3, #0]
+ 80006cc:	001a      	movs	r2, r3
+ 80006ce:	0013      	movs	r3, r2
+ 80006d0:	00db      	lsls	r3, r3, #3
+ 80006d2:	1a9b      	subs	r3, r3, r2
+ 80006d4:	009b      	lsls	r3, r3, #2
+ 80006d6:	4a06      	ldr	r2, [pc, #24]	@ (80006f0 <osStart+0x40>)
+ 80006d8:	189a      	adds	r2, r3, r2
+ 80006da:	4b06      	ldr	r3, [pc, #24]	@ (80006f4 <osStart+0x44>)
+ 80006dc:	601a      	str	r2, [r3, #0]
+    }
+    _rtos_start();          /* Does not return */
+ 80006de:	f7ff ff39 	bl	8000554 <_rtos_start>
+}
+ 80006e2:	46c0      	nop			@ (mov r8, r8)
+ 80006e4:	46bd      	mov	sp, r7
+ 80006e6:	bd80      	pop	{r7, pc}
+ 80006e8:	2000030c 	.word	0x2000030c
+ 80006ec:	20000338 	.word	0x20000338
+ 80006f0:	20000228 	.word	0x20000228
+ 80006f4:	20000308 	.word	0x20000308
+
+080006f8 <os_task_exit>:
+ *
+ * We disable interrupts and spin so a debugger can catch the violation.
+ * In production you could also trigger a hard-fault or watchdog reset.
+ * ========================================================================= */
+static void os_task_exit(void)
+{
+ 80006f8:	b580      	push	{r7, lr}
+ 80006fa:	af00      	add	r7, sp, #0
+    __CPSID_I();    /* Disable interrupts so the debugger gets a clean halt */
+ 80006fc:	b672      	cpsid	i
+    while (1) {
+        __NOP();    /* Place a breakpoint here in your IDE                  */
+ 80006fe:	46c0      	nop			@ (mov r8, r8)
+ 8000700:	e7fd      	b.n	80006fe <os_task_exit+0x6>
+	...
+
+08000704 <os_task_stack_init>:
+ * ========================================================================= */
+static void os_task_stack_init(TCB_t    *tcb,
+                                void    (*func)(void),
+                                uint32_t *stack,
+                                uint32_t  stack_words)
+{
+ 8000704:	b580      	push	{r7, lr}
+ 8000706:	b086      	sub	sp, #24
+ 8000708:	af00      	add	r7, sp, #0
+ 800070a:	60f8      	str	r0, [r7, #12]
+ 800070c:	60b9      	str	r1, [r7, #8]
+ 800070e:	607a      	str	r2, [r7, #4]
+ 8000710:	603b      	str	r3, [r7, #0]
+    /* sp starts at the top of the stack array (highest address + 1 word).
+     * Each *(--sp) = x  pre-decrements before writing (simulates PUSH). */
+    uint32_t *sp = stack + stack_words;
+ 8000712:	683b      	ldr	r3, [r7, #0]
+ 8000714:	009b      	lsls	r3, r3, #2
+ 8000716:	687a      	ldr	r2, [r7, #4]
+ 8000718:	18d3      	adds	r3, r2, r3
+ 800071a:	617b      	str	r3, [r7, #20]
+
+    /* ---- Hardware exception frame (filled top-down) ---- */
+    *(--sp) = 0x01000000UL;             /* xPSR  : Thumb=1, no exception     */
+ 800071c:	697b      	ldr	r3, [r7, #20]
+ 800071e:	3b04      	subs	r3, #4
+ 8000720:	617b      	str	r3, [r7, #20]
+ 8000722:	697b      	ldr	r3, [r7, #20]
+ 8000724:	2280      	movs	r2, #128	@ 0x80
+ 8000726:	0452      	lsls	r2, r2, #17
+ 8000728:	601a      	str	r2, [r3, #0]
+    *(--sp) = (uint32_t)func;           /* PC    : task entry point           */
+ 800072a:	697b      	ldr	r3, [r7, #20]
+ 800072c:	3b04      	subs	r3, #4
+ 800072e:	617b      	str	r3, [r7, #20]
+ 8000730:	68ba      	ldr	r2, [r7, #8]
+ 8000732:	697b      	ldr	r3, [r7, #20]
+ 8000734:	601a      	str	r2, [r3, #0]
+    *(--sp) = (uint32_t)os_task_exit;   /* LR    : trap if task returns       */
+ 8000736:	697b      	ldr	r3, [r7, #20]
+ 8000738:	3b04      	subs	r3, #4
+ 800073a:	617b      	str	r3, [r7, #20]
+ 800073c:	4a2b      	ldr	r2, [pc, #172]	@ (80007ec <os_task_stack_init+0xe8>)
+ 800073e:	697b      	ldr	r3, [r7, #20]
+ 8000740:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R12   : initialised to zero        */
+ 8000742:	697b      	ldr	r3, [r7, #20]
+ 8000744:	3b04      	subs	r3, #4
+ 8000746:	617b      	str	r3, [r7, #20]
+ 8000748:	697b      	ldr	r3, [r7, #20]
+ 800074a:	2200      	movs	r2, #0
+ 800074c:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R3    : initialised to zero        */
+ 800074e:	697b      	ldr	r3, [r7, #20]
+ 8000750:	3b04      	subs	r3, #4
+ 8000752:	617b      	str	r3, [r7, #20]
+ 8000754:	697b      	ldr	r3, [r7, #20]
+ 8000756:	2200      	movs	r2, #0
+ 8000758:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R2    : initialised to zero        */
+ 800075a:	697b      	ldr	r3, [r7, #20]
+ 800075c:	3b04      	subs	r3, #4
+ 800075e:	617b      	str	r3, [r7, #20]
+ 8000760:	697b      	ldr	r3, [r7, #20]
+ 8000762:	2200      	movs	r2, #0
+ 8000764:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R1    : initialised to zero        */
+ 8000766:	697b      	ldr	r3, [r7, #20]
+ 8000768:	3b04      	subs	r3, #4
+ 800076a:	617b      	str	r3, [r7, #20]
+ 800076c:	697b      	ldr	r3, [r7, #20]
+ 800076e:	2200      	movs	r2, #0
+ 8000770:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R0    : task arg (zero for now)    */
+ 8000772:	697b      	ldr	r3, [r7, #20]
+ 8000774:	3b04      	subs	r3, #4
+ 8000776:	617b      	str	r3, [r7, #20]
+ 8000778:	697b      	ldr	r3, [r7, #20]
+ 800077a:	2200      	movs	r2, #0
+ 800077c:	601a      	str	r2, [r3, #0]
+
+    /* ---- Software save frame (filled top-down) ---- */
+    *(--sp) = 0x00000000UL;             /* R11 */
+ 800077e:	697b      	ldr	r3, [r7, #20]
+ 8000780:	3b04      	subs	r3, #4
+ 8000782:	617b      	str	r3, [r7, #20]
+ 8000784:	697b      	ldr	r3, [r7, #20]
+ 8000786:	2200      	movs	r2, #0
+ 8000788:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R10 */
+ 800078a:	697b      	ldr	r3, [r7, #20]
+ 800078c:	3b04      	subs	r3, #4
+ 800078e:	617b      	str	r3, [r7, #20]
+ 8000790:	697b      	ldr	r3, [r7, #20]
+ 8000792:	2200      	movs	r2, #0
+ 8000794:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R9  */
+ 8000796:	697b      	ldr	r3, [r7, #20]
+ 8000798:	3b04      	subs	r3, #4
+ 800079a:	617b      	str	r3, [r7, #20]
+ 800079c:	697b      	ldr	r3, [r7, #20]
+ 800079e:	2200      	movs	r2, #0
+ 80007a0:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R8  */
+ 80007a2:	697b      	ldr	r3, [r7, #20]
+ 80007a4:	3b04      	subs	r3, #4
+ 80007a6:	617b      	str	r3, [r7, #20]
+ 80007a8:	697b      	ldr	r3, [r7, #20]
+ 80007aa:	2200      	movs	r2, #0
+ 80007ac:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R7  */
+ 80007ae:	697b      	ldr	r3, [r7, #20]
+ 80007b0:	3b04      	subs	r3, #4
+ 80007b2:	617b      	str	r3, [r7, #20]
+ 80007b4:	697b      	ldr	r3, [r7, #20]
+ 80007b6:	2200      	movs	r2, #0
+ 80007b8:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R6  */
+ 80007ba:	697b      	ldr	r3, [r7, #20]
+ 80007bc:	3b04      	subs	r3, #4
+ 80007be:	617b      	str	r3, [r7, #20]
+ 80007c0:	697b      	ldr	r3, [r7, #20]
+ 80007c2:	2200      	movs	r2, #0
+ 80007c4:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R5  */
+ 80007c6:	697b      	ldr	r3, [r7, #20]
+ 80007c8:	3b04      	subs	r3, #4
+ 80007ca:	617b      	str	r3, [r7, #20]
+ 80007cc:	697b      	ldr	r3, [r7, #20]
+ 80007ce:	2200      	movs	r2, #0
+ 80007d0:	601a      	str	r2, [r3, #0]
+    *(--sp) = 0x00000000UL;             /* R4  ← TCB->sp will point here     */
+ 80007d2:	697b      	ldr	r3, [r7, #20]
+ 80007d4:	3b04      	subs	r3, #4
+ 80007d6:	617b      	str	r3, [r7, #20]
+ 80007d8:	697b      	ldr	r3, [r7, #20]
+ 80007da:	2200      	movs	r2, #0
+ 80007dc:	601a      	str	r2, [r3, #0]
+
+    /* Store the resulting stack pointer into the TCB.
+     * From this moment the task is "restoreable" by PendSV_Handler. */
+    tcb->sp = sp;   /* offset 0 — must remain first field in TCB_t */
+ 80007de:	68fb      	ldr	r3, [r7, #12]
+ 80007e0:	697a      	ldr	r2, [r7, #20]
+ 80007e2:	601a      	str	r2, [r3, #0]
+}
+ 80007e4:	46c0      	nop			@ (mov r8, r8)
+ 80007e6:	46bd      	mov	sp, r7
+ 80007e8:	b006      	add	sp, #24
+ 80007ea:	bd80      	pop	{r7, pc}
+ 80007ec:	080006f9 	.word	0x080006f9
+
+080007f0 <osTaskCreate>:
+void osTaskCreate(const char *name,
+                  void      (*func)(void),
+                  uint32_t   *stack,
+                  uint32_t    stack_words,
+                  uint8_t     priority)
+{
+ 80007f0:	b580      	push	{r7, lr}
+ 80007f2:	b086      	sub	sp, #24
+ 80007f4:	af00      	add	r7, sp, #0
+ 80007f6:	60f8      	str	r0, [r7, #12]
+ 80007f8:	60b9      	str	r1, [r7, #8]
+ 80007fa:	607a      	str	r2, [r7, #4]
+ 80007fc:	603b      	str	r3, [r7, #0]
+    /* Guard: too many tasks */
+    if (task_count >= MAX_TASKS) {
+ 80007fe:	4b22      	ldr	r3, [pc, #136]	@ (8000888 <osTaskCreate+0x98>)
+ 8000800:	781b      	ldrb	r3, [r3, #0]
+ 8000802:	2b07      	cmp	r3, #7
+ 8000804:	d902      	bls.n	800080c <osTaskCreate+0x1c>
+        /* Trap — increase MAX_TASKS or reduce the number of tasks */
+        __CPSID_I();
+ 8000806:	b672      	cpsid	i
+        while (1) { __NOP(); }
+ 8000808:	46c0      	nop			@ (mov r8, r8)
+ 800080a:	e7fd      	b.n	8000808 <osTaskCreate+0x18>
+    }
+
+    /* Guard: stack too small.  16 words is the bare minimum (8 hw + 8 sw).
+     * Anything below 32 words is risky; 64 words is the recommended default. */
+    if (stack_words < 16U) {
+ 800080c:	683b      	ldr	r3, [r7, #0]
+ 800080e:	2b0f      	cmp	r3, #15
+ 8000810:	d802      	bhi.n	8000818 <osTaskCreate+0x28>
+        __CPSID_I();
+ 8000812:	b672      	cpsid	i
+        while (1) { __NOP(); }
+ 8000814:	46c0      	nop			@ (mov r8, r8)
+ 8000816:	e7fd      	b.n	8000814 <osTaskCreate+0x24>
+    }
+
+    /* Disable interrupts around the write to shared state.
+     * osTaskCreate() must only be called before osStart(), so the RTOS is
+     * not yet running — but defensive practice is good habit. */
+    __CPSID_I();
+ 8000818:	b672      	cpsid	i
+
+    TCB_t *tcb       = &task_pool[task_count];
+ 800081a:	4b1b      	ldr	r3, [pc, #108]	@ (8000888 <osTaskCreate+0x98>)
+ 800081c:	781b      	ldrb	r3, [r3, #0]
+ 800081e:	001a      	movs	r2, r3
+ 8000820:	0013      	movs	r3, r2
+ 8000822:	00db      	lsls	r3, r3, #3
+ 8000824:	1a9b      	subs	r3, r3, r2
+ 8000826:	009b      	lsls	r3, r3, #2
+ 8000828:	4a18      	ldr	r2, [pc, #96]	@ (800088c <osTaskCreate+0x9c>)
+ 800082a:	189b      	adds	r3, r3, r2
+ 800082c:	617b      	str	r3, [r7, #20]
+
+    tcb->name        = name;
+ 800082e:	697b      	ldr	r3, [r7, #20]
+ 8000830:	68fa      	ldr	r2, [r7, #12]
+ 8000832:	619a      	str	r2, [r3, #24]
+    tcb->state       = TASK_READY;
+ 8000834:	697b      	ldr	r3, [r7, #20]
+ 8000836:	2200      	movs	r2, #0
+ 8000838:	711a      	strb	r2, [r3, #4]
+    tcb->priority    = priority;
+ 800083a:	697a      	ldr	r2, [r7, #20]
+ 800083c:	2320      	movs	r3, #32
+ 800083e:	18fb      	adds	r3, r7, r3
+ 8000840:	781b      	ldrb	r3, [r3, #0]
+ 8000842:	7153      	strb	r3, [r2, #5]
+    tcb->wake_tick   = 0U;
+ 8000844:	697b      	ldr	r3, [r7, #20]
+ 8000846:	2200      	movs	r2, #0
+ 8000848:	60da      	str	r2, [r3, #12]
+    tcb->stack_base  = stack;
+ 800084a:	697b      	ldr	r3, [r7, #20]
+ 800084c:	687a      	ldr	r2, [r7, #4]
+ 800084e:	611a      	str	r2, [r3, #16]
+    tcb->stack_words = stack_words;
+ 8000850:	697b      	ldr	r3, [r7, #20]
+ 8000852:	683a      	ldr	r2, [r7, #0]
+ 8000854:	615a      	str	r2, [r3, #20]
+
+    os_task_stack_init(tcb, func, stack, stack_words);
+ 8000856:	683b      	ldr	r3, [r7, #0]
+ 8000858:	687a      	ldr	r2, [r7, #4]
+ 800085a:	68b9      	ldr	r1, [r7, #8]
+ 800085c:	6978      	ldr	r0, [r7, #20]
+ 800085e:	f7ff ff51 	bl	8000704 <os_task_stack_init>
+
+    /* current_task must always point to a valid TCB.
+     * Set it to the first task created; os_schedule() will refine this. */
+    if (task_count == 0U) {
+ 8000862:	4b09      	ldr	r3, [pc, #36]	@ (8000888 <osTaskCreate+0x98>)
+ 8000864:	781b      	ldrb	r3, [r3, #0]
+ 8000866:	2b00      	cmp	r3, #0
+ 8000868:	d102      	bne.n	8000870 <osTaskCreate+0x80>
+        current_task = tcb;
+ 800086a:	4b09      	ldr	r3, [pc, #36]	@ (8000890 <osTaskCreate+0xa0>)
+ 800086c:	697a      	ldr	r2, [r7, #20]
+ 800086e:	601a      	str	r2, [r3, #0]
+    }
+
+    task_count++;
+ 8000870:	4b05      	ldr	r3, [pc, #20]	@ (8000888 <osTaskCreate+0x98>)
+ 8000872:	781b      	ldrb	r3, [r3, #0]
+ 8000874:	3301      	adds	r3, #1
+ 8000876:	b2da      	uxtb	r2, r3
+ 8000878:	4b03      	ldr	r3, [pc, #12]	@ (8000888 <osTaskCreate+0x98>)
+ 800087a:	701a      	strb	r2, [r3, #0]
+
+    __CPSIE_I();
+ 800087c:	b662      	cpsie	i
+}
+ 800087e:	46c0      	nop			@ (mov r8, r8)
+ 8000880:	46bd      	mov	sp, r7
+ 8000882:	b006      	add	sp, #24
+ 8000884:	bd80      	pop	{r7, pc}
+ 8000886:	46c0      	nop			@ (mov r8, r8)
+ 8000888:	2000030c 	.word	0x2000030c
+ 800088c:	20000228 	.word	0x20000228
+ 8000890:	20000308 	.word	0x20000308
+
+08000894 <osDelay>:
+ *
+ * PHASE 5 REPLACEMENT: set state = TASK_SLEEPING, set wake_tick, trigger
+ * PendSV immediately so another READY task runs during the delay.
+ * ========================================================================= */
+void osDelay(uint32_t ticks)
+{
+ 8000894:	b580      	push	{r7, lr}
+ 8000896:	b084      	sub	sp, #16
+ 8000898:	af00      	add	r7, sp, #0
+ 800089a:	6078      	str	r0, [r7, #4]
+     *   current_task->state     = TASK_SLEEPING;
+     *   __CPSIE_I();
+     *   trigger_pendsv();
+     *   // PendSV will context-switch us out; we return here when we wake.
+     */
+    uint32_t start = sys_tick;
+ 800089c:	4b07      	ldr	r3, [pc, #28]	@ (80008bc <osDelay+0x28>)
+ 800089e:	681b      	ldr	r3, [r3, #0]
+ 80008a0:	60fb      	str	r3, [r7, #12]
+    while ((sys_tick - start) < ticks) {
+ 80008a2:	46c0      	nop			@ (mov r8, r8)
+ 80008a4:	4b05      	ldr	r3, [pc, #20]	@ (80008bc <osDelay+0x28>)
+ 80008a6:	681a      	ldr	r2, [r3, #0]
+ 80008a8:	68fb      	ldr	r3, [r7, #12]
+ 80008aa:	1ad3      	subs	r3, r2, r3
+ 80008ac:	687a      	ldr	r2, [r7, #4]
+ 80008ae:	429a      	cmp	r2, r3
+ 80008b0:	d8f8      	bhi.n	80008a4 <osDelay+0x10>
+        /* Interrupts are enabled so SysTick advances sys_tick normally.
+         * This is a spinwait and blocks other tasks — temporary until Phase 5. */
+    }
+}
+ 80008b2:	46c0      	nop			@ (mov r8, r8)
+ 80008b4:	46c0      	nop			@ (mov r8, r8)
+ 80008b6:	46bd      	mov	sp, r7
+ 80008b8:	b004      	add	sp, #16
+ 80008ba:	bd80      	pop	{r7, pc}
+ 80008bc:	20000310 	.word	0x20000310
+
+080008c0 <os_schedule>:
+ *
+ * Called from PendSV_Handler with interrupts disabled (CPSID I active).
+ * Must update current_task before returning.
+ * ========================================================================= */
+void os_schedule(void)
+{
+ 80008c0:	b580      	push	{r7, lr}
+ 80008c2:	b082      	sub	sp, #8
+ 80008c4:	af00      	add	r7, sp, #0
+    /* If the outgoing task was RUNNING, mark it READY so it can be picked
+     * again.  Do not change the state if it is SLEEPING or BLOCKED — those
+     * states are set intentionally by osDelay() / semaphore wait. */
+    if (current_task->state == TASK_RUNNING) {
+ 80008c6:	4b29      	ldr	r3, [pc, #164]	@ (800096c <os_schedule+0xac>)
+ 80008c8:	681b      	ldr	r3, [r3, #0]
+ 80008ca:	791b      	ldrb	r3, [r3, #4]
+ 80008cc:	2b01      	cmp	r3, #1
+ 80008ce:	d103      	bne.n	80008d8 <os_schedule+0x18>
+        current_task->state = TASK_READY;
+ 80008d0:	4b26      	ldr	r3, [pc, #152]	@ (800096c <os_schedule+0xac>)
+ 80008d2:	681b      	ldr	r3, [r3, #0]
+ 80008d4:	2200      	movs	r2, #0
+ 80008d6:	711a      	strb	r2, [r3, #4]
+    }
+
+    /* Round-robin search: start one slot after the current task, wrap at
+     * task_count.  We scan at most task_count slots (a full circle). */
+    for (uint8_t i = 1U; i <= task_count; i++) {
+ 80008d8:	1dfb      	adds	r3, r7, #7
+ 80008da:	2201      	movs	r2, #1
+ 80008dc:	701a      	strb	r2, [r3, #0]
+ 80008de:	e033      	b.n	8000948 <os_schedule+0x88>
+        uint8_t idx = (uint8_t)((current_task_index + i) % task_count);
+ 80008e0:	4b23      	ldr	r3, [pc, #140]	@ (8000970 <os_schedule+0xb0>)
+ 80008e2:	781b      	ldrb	r3, [r3, #0]
+ 80008e4:	001a      	movs	r2, r3
+ 80008e6:	1dfb      	adds	r3, r7, #7
+ 80008e8:	781b      	ldrb	r3, [r3, #0]
+ 80008ea:	18d2      	adds	r2, r2, r3
+ 80008ec:	4b21      	ldr	r3, [pc, #132]	@ (8000974 <os_schedule+0xb4>)
+ 80008ee:	781b      	ldrb	r3, [r3, #0]
+ 80008f0:	0019      	movs	r1, r3
+ 80008f2:	0010      	movs	r0, r2
+ 80008f4:	f7ff fd72 	bl	80003dc <__aeabi_idivmod>
+ 80008f8:	000b      	movs	r3, r1
+ 80008fa:	001a      	movs	r2, r3
+ 80008fc:	1dbb      	adds	r3, r7, #6
+ 80008fe:	701a      	strb	r2, [r3, #0]
+
+        if (task_pool[idx].state == TASK_READY) {
+ 8000900:	1dbb      	adds	r3, r7, #6
+ 8000902:	781a      	ldrb	r2, [r3, #0]
+ 8000904:	491c      	ldr	r1, [pc, #112]	@ (8000978 <os_schedule+0xb8>)
+ 8000906:	0013      	movs	r3, r2
+ 8000908:	00db      	lsls	r3, r3, #3
+ 800090a:	1a9b      	subs	r3, r3, r2
+ 800090c:	009b      	lsls	r3, r3, #2
+ 800090e:	18cb      	adds	r3, r1, r3
+ 8000910:	3304      	adds	r3, #4
+ 8000912:	781b      	ldrb	r3, [r3, #0]
+ 8000914:	2b00      	cmp	r3, #0
+ 8000916:	d112      	bne.n	800093e <os_schedule+0x7e>
+            current_task_index = idx;
+ 8000918:	4b15      	ldr	r3, [pc, #84]	@ (8000970 <os_schedule+0xb0>)
+ 800091a:	1dba      	adds	r2, r7, #6
+ 800091c:	7812      	ldrb	r2, [r2, #0]
+ 800091e:	701a      	strb	r2, [r3, #0]
+            current_task       = &task_pool[idx];
+ 8000920:	1dbb      	adds	r3, r7, #6
+ 8000922:	781a      	ldrb	r2, [r3, #0]
+ 8000924:	0013      	movs	r3, r2
+ 8000926:	00db      	lsls	r3, r3, #3
+ 8000928:	1a9b      	subs	r3, r3, r2
+ 800092a:	009b      	lsls	r3, r3, #2
+ 800092c:	4a12      	ldr	r2, [pc, #72]	@ (8000978 <os_schedule+0xb8>)
+ 800092e:	189a      	adds	r2, r3, r2
+ 8000930:	4b0e      	ldr	r3, [pc, #56]	@ (800096c <os_schedule+0xac>)
+ 8000932:	601a      	str	r2, [r3, #0]
+            current_task->state = TASK_RUNNING;
+ 8000934:	4b0d      	ldr	r3, [pc, #52]	@ (800096c <os_schedule+0xac>)
+ 8000936:	681b      	ldr	r3, [r3, #0]
+ 8000938:	2201      	movs	r2, #1
+ 800093a:	711a      	strb	r2, [r3, #4]
+            return;
+ 800093c:	e013      	b.n	8000966 <os_schedule+0xa6>
+    for (uint8_t i = 1U; i <= task_count; i++) {
+ 800093e:	1dfb      	adds	r3, r7, #7
+ 8000940:	781a      	ldrb	r2, [r3, #0]
+ 8000942:	1dfb      	adds	r3, r7, #7
+ 8000944:	3201      	adds	r2, #1
+ 8000946:	701a      	strb	r2, [r3, #0]
+ 8000948:	4b0a      	ldr	r3, [pc, #40]	@ (8000974 <os_schedule+0xb4>)
+ 800094a:	781b      	ldrb	r3, [r3, #0]
+ 800094c:	1dfa      	adds	r2, r7, #7
+ 800094e:	7812      	ldrb	r2, [r2, #0]
+ 8000950:	429a      	cmp	r2, r3
+ 8000952:	d9c5      	bls.n	80008e0 <os_schedule+0x20>
+     *
+     * This can happen legitimately if all other tasks are SLEEPING or BLOCKED.
+     * If the current task itself is SLEEPING/BLOCKED (and there is no idle task),
+     * the CPU busy-waits here until SysTick wakes a sleeping task.  Adding an
+     * idle task (Phase 5) prevents this degenerate case. */
+    if (current_task->state == TASK_READY) {
+ 8000954:	4b05      	ldr	r3, [pc, #20]	@ (800096c <os_schedule+0xac>)
+ 8000956:	681b      	ldr	r3, [r3, #0]
+ 8000958:	791b      	ldrb	r3, [r3, #4]
+ 800095a:	2b00      	cmp	r3, #0
+ 800095c:	d103      	bne.n	8000966 <os_schedule+0xa6>
+        /* Was just marked READY above — flip back to RUNNING */
+        current_task->state = TASK_RUNNING;
+ 800095e:	4b03      	ldr	r3, [pc, #12]	@ (800096c <os_schedule+0xac>)
+ 8000960:	681b      	ldr	r3, [r3, #0]
+ 8000962:	2201      	movs	r2, #1
+ 8000964:	711a      	strb	r2, [r3, #4]
+    }
+    /* Otherwise state is already SLEEPING or BLOCKED — leave it unchanged.
+     * The next SysTick / semaphore signal will set a task to READY and the
+     * scheduler will find it on the following PendSV. */
+}
+ 8000966:	46bd      	mov	sp, r7
+ 8000968:	b002      	add	sp, #8
+ 800096a:	bd80      	pop	{r7, pc}
+ 800096c:	20000308 	.word	0x20000308
+ 8000970:	20000338 	.word	0x20000338
+ 8000974:	2000030c 	.word	0x2000030c
+ 8000978:	20000228 	.word	0x20000228
+
+0800097c <Reset_Handler>:
+
+  .section .text.Reset_Handler
+  .weak Reset_Handler
+  .type Reset_Handler, %function
+Reset_Handler:
+  ldr   r0, =_estack
+ 800097c:	480d      	ldr	r0, [pc, #52]	@ (80009b4 <LoopForever+0x2>)
+  mov   sp, r0          /* set stack pointer */
+ 800097e:	4685      	mov	sp, r0
+/* Call the clock system initialization function.*/
+  bl  SystemInit
+ 8000980:	e000      	b.n	8000984 <Reset_Handler+0x8>
+ 8000982:	bf00      	nop
+
+/* Copy the data segment initializers from flash to SRAM */
+  ldr r0, =_sdata
+ 8000984:	480c      	ldr	r0, [pc, #48]	@ (80009b8 <LoopForever+0x6>)
+  ldr r1, =_edata
+ 8000986:	490d      	ldr	r1, [pc, #52]	@ (80009bc <LoopForever+0xa>)
+  ldr r2, =_sidata
+ 8000988:	4a0d      	ldr	r2, [pc, #52]	@ (80009c0 <LoopForever+0xe>)
+  movs r3, #0
+ 800098a:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 800098c:	e002      	b.n	8000994 <LoopCopyDataInit>
+
+0800098e <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 800098e:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 8000990:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 8000992:	3304      	adds	r3, #4
+
+08000994 <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 8000994:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 8000996:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 8000998:	d3f9      	bcc.n	800098e <CopyDataInit>
+
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 800099a:	4a0a      	ldr	r2, [pc, #40]	@ (80009c4 <LoopForever+0x12>)
+  ldr r4, =_ebss
+ 800099c:	4c0a      	ldr	r4, [pc, #40]	@ (80009c8 <LoopForever+0x16>)
+  movs r3, #0
+ 800099e:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 80009a0:	e001      	b.n	80009a6 <LoopFillZerobss>
+
+080009a2 <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 80009a2:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 80009a4:	3204      	adds	r2, #4
+
+080009a6 <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 80009a6:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 80009a8:	d3fb      	bcc.n	80009a2 <FillZerobss>
+
+
+/* Call static constructors */
+  bl __libc_init_array
+ 80009aa:	f000 f811 	bl	80009d0 <__libc_init_array>
+/* Call the application's entry point.*/
+
+  bl main
+ 80009ae:	f7ff fe2f 	bl	8000610 <main>
+
+080009b2 <LoopForever>:
+
+LoopForever:
+  b LoopForever
+ 80009b2:	e7fe      	b.n	80009b2 <LoopForever>
+  ldr   r0, =_estack
+ 80009b4:	20003000 	.word	0x20003000
+  ldr r0, =_sdata
+ 80009b8:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 80009bc:	20000004 	.word	0x20000004
+  ldr r2, =_sidata
+ 80009c0:	08000a44 	.word	0x08000a44
+  ldr r2, =_sbss
+ 80009c4:	20000008 	.word	0x20000008
+  ldr r4, =_ebss
+ 80009c8:	2000033c 	.word	0x2000033c
+
+080009cc <ADC_IRQHandler>:
+ * @retval : None
+*/
+  .section .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b Infinite_Loop
+ 80009cc:	e7fe      	b.n	80009cc <ADC_IRQHandler>
+	...
+
+080009d0 <__libc_init_array>:
+ 80009d0:	b570      	push	{r4, r5, r6, lr}
+ 80009d2:	2600      	movs	r6, #0
+ 80009d4:	4c0c      	ldr	r4, [pc, #48]	@ (8000a08 <__libc_init_array+0x38>)
+ 80009d6:	4d0d      	ldr	r5, [pc, #52]	@ (8000a0c <__libc_init_array+0x3c>)
+ 80009d8:	1b64      	subs	r4, r4, r5
+ 80009da:	10a4      	asrs	r4, r4, #2
+ 80009dc:	42a6      	cmp	r6, r4
+ 80009de:	d109      	bne.n	80009f4 <__libc_init_array+0x24>
+ 80009e0:	2600      	movs	r6, #0
+ 80009e2:	f000 f819 	bl	8000a18 <_init>
+ 80009e6:	4c0a      	ldr	r4, [pc, #40]	@ (8000a10 <__libc_init_array+0x40>)
+ 80009e8:	4d0a      	ldr	r5, [pc, #40]	@ (8000a14 <__libc_init_array+0x44>)
+ 80009ea:	1b64      	subs	r4, r4, r5
+ 80009ec:	10a4      	asrs	r4, r4, #2
+ 80009ee:	42a6      	cmp	r6, r4
+ 80009f0:	d105      	bne.n	80009fe <__libc_init_array+0x2e>
+ 80009f2:	bd70      	pop	{r4, r5, r6, pc}
+ 80009f4:	00b3      	lsls	r3, r6, #2
+ 80009f6:	58eb      	ldr	r3, [r5, r3]
+ 80009f8:	4798      	blx	r3
+ 80009fa:	3601      	adds	r6, #1
+ 80009fc:	e7ee      	b.n	80009dc <__libc_init_array+0xc>
+ 80009fe:	00b3      	lsls	r3, r6, #2
+ 8000a00:	58eb      	ldr	r3, [r5, r3]
+ 8000a02:	4798      	blx	r3
+ 8000a04:	3601      	adds	r6, #1
+ 8000a06:	e7f2      	b.n	80009ee <__libc_init_array+0x1e>
+ 8000a08:	08000a3c 	.word	0x08000a3c
+ 8000a0c:	08000a3c 	.word	0x08000a3c
+ 8000a10:	08000a40 	.word	0x08000a40
+ 8000a14:	08000a3c 	.word	0x08000a3c
+
+08000a18 <_init>:
+ 8000a18:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000a1a:	46c0      	nop			@ (mov r8, r8)
+ 8000a1c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000a1e:	bc08      	pop	{r3}
+ 8000a20:	469e      	mov	lr, r3
+ 8000a22:	4770      	bx	lr
+
+08000a24 <_fini>:
+ 8000a24:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000a26:	46c0      	nop			@ (mov r8, r8)
+ 8000a28:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000a2a:	bc08      	pop	{r3}
+ 8000a2c:	469e      	mov	lr, r3
+ 8000a2e:	4770      	bx	lr

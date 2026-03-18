@@ -1,0 +1,4 @@
+../Src/main.c:51:13:SysTick_Init	8	static
+../Src/main.c:76:13:task_led	8	static
+../Src/main.c:95:13:task_counter	8	static
+../Src/main.c:106:5:main	16	static,ignoring_inline_asm

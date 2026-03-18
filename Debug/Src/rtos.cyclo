@@ -1,0 +1,8 @@
+../Inc/stm32c031c6.h:260:20:trigger_pendsv	1
+../Src/rtos.c:69:6:SysTick_Handler	2
+../Src/rtos.c:98:10:osGetTick	1
+../Src/rtos.c:122:6:osStart	2
+../Src/rtos.c:140:13:os_task_exit	1
+../Src/rtos.c:184:13:os_task_stack_init	1
+../Src/rtos.c:222:6:osTaskCreate	4
+../Src/rtos.c:278:6:osDelay	2
