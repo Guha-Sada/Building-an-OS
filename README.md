@@ -1,0 +1,1 @@
+The goal of this project is to learn how an OS interacts with an Embedded System. A secondary goal is to get comfortable using Claude. I am coming into this project with a working knowledge of the Linux Kernel.
