@@ -7,24 +7,27 @@
  * Phase 3-4: RTOS starts here — two tasks, context switching live.  ✓
  * Phase 5 : Real osDelay() — tasks genuinely sleep; idle task added. ✓
  * Phase 6 : Semaphores and mutexes implemented; demo added below.    ✓
+ * Phase 7 : Priority-based preemptive scheduler.                     ✓
  *
- * HOW TO VERIFY PHASE 6
+ * HOW TO VERIFY PHASE 7
  * ---------------------
- * Two new global counters are visible in the Live Expressions window:
+ * Task priorities in this build:
  *
- *   sem_signal_count  — incremented by task_led after each blink cycle
- *   sem_consume_count — incremented by task_consumer each time it unblocks
+ *   task_idle     — priority 0  (lowest;  runs only when everyone else sleeps)
+ *   task_led      — priority 1  (normal;  1 Hz blink)
+ *   task_counter  — priority 1  (normal;  100 Hz counter)
+ *   task_consumer — priority 2  (high;    preempts priority-1 tasks on wake)
  *
  * Expected observations:
- *   - sem_signal_count and sem_consume_count stay in lock-step: for every
- *     signal there is exactly one consume.  This proves the semaphore
- *     correctly transfers ownership rather than losing or duplicating wakes.
- *   - Both counters increment at ~1 Hz (one blink cycle = 1 second).
- *   - task_consumer spends most of its time BLOCKED (not spinning) —
- *     confirm by pausing the debugger: it should be parked at the
- *     trigger_pendsv() call inside osSemaphoreWait().
- *   - task2_counter still increments at ~100 Hz independently, proving
- *     the semaphore path does not disturb the rest of the scheduler.
+ *   - sem_signal_count and sem_consume_count still stay in lock-step at ~1 Hz.
+ *   - The key NEW behaviour: when task_led calls osSemaphoreSignal(), the
+ *     signal path calls trigger_pendsv() immediately.  On the resulting PendSV,
+ *     os_schedule() finds task_consumer READY at priority 2, which beats
+ *     task_led at priority 1 — so task_consumer runs BEFORE task_led gets
+ *     its next slice.  In a logic analyser or by stepping in the debugger you
+ *     would see the order: led-signals → consumer-increments → led-resumes.
+ *   - task2_counter still increments at ~100 Hz; it never starves because
+ *     task_consumer immediately re-blocks, returning the CPU to priority 1.
  */
 
 #include <stdint.h>
@@ -165,10 +168,10 @@ int main(void)
     /* ---- Phase 6: init semaphore before tasks start ---- */
     osSemaphoreInit(&sem_blink, 0);     /* Start at 0: consumer blocks first */
 
-    /* ---- Create tasks ---- */
+    /* ---- Create tasks (priority 0 = lowest, higher = more urgent) ---- */
     osTaskCreate("led",      task_led,      task_led_stack,      TASK_STACK_WORDS_DEFAULT, 1U);
     osTaskCreate("counter",  task_counter,  task_count_stack,    TASK_STACK_WORDS_DEFAULT, 1U);
-    osTaskCreate("consumer", task_consumer, task_consumer_stack, TASK_STACK_WORDS_DEFAULT, 1U);
+    osTaskCreate("consumer", task_consumer, task_consumer_stack, TASK_STACK_WORDS_DEFAULT, 2U);
     osTaskCreate("idle",     task_idle,     task_idle_stack,     32U,                      0U);
 
     /* ---- Start the RTOS (never returns) ---- */
