@@ -1,0 +1,7 @@
+../Inc/stm32c031c6.h:260:20:trigger_pendsv	1
+../Src/semaphore.c:57:6:osSemaphoreInit	2
+../Src/semaphore.c:81:6:osSemaphoreWait	2
+../Src/semaphore.c:126:6:osSemaphoreSignal	3
+../Src/semaphore.c:169:6:osMutexInit	1
+../Src/semaphore.c:183:6:osMutexAcquire	1
+../Src/semaphore.c:202:6:osMutexRelease	2

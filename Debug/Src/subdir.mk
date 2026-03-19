@@ -12,6 +12,7 @@ C_SRCS += \
 ../Src/main.c \
 ../Src/rtos.c \
 ../Src/scheduler.c \
+../Src/semaphore.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
 
@@ -21,6 +22,7 @@ OBJS += \
 ./Src/main.o \
 ./Src/rtos.o \
 ./Src/scheduler.o \
+./Src/semaphore.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
 
@@ -32,6 +34,7 @@ C_DEPS += \
 ./Src/main.d \
 ./Src/rtos.d \
 ./Src/scheduler.d \
+./Src/semaphore.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d 
 
@@ -45,7 +48,7 @@ Src/%.o: ../Src/%.s Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/clock.cyclo ./Src/clock.d ./Src/clock.o ./Src/clock.su ./Src/context_switch.d ./Src/context_switch.o ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/rtos.cyclo ./Src/rtos.d ./Src/rtos.o ./Src/rtos.su ./Src/scheduler.cyclo ./Src/scheduler.d ./Src/scheduler.o ./Src/scheduler.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/clock.cyclo ./Src/clock.d ./Src/clock.o ./Src/clock.su ./Src/context_switch.d ./Src/context_switch.o ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/rtos.cyclo ./Src/rtos.d ./Src/rtos.o ./Src/rtos.su ./Src/scheduler.cyclo ./Src/scheduler.d ./Src/scheduler.o ./Src/scheduler.su ./Src/semaphore.cyclo ./Src/semaphore.d ./Src/semaphore.o ./Src/semaphore.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 

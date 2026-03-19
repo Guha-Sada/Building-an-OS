@@ -6,27 +6,32 @@
  * Phase 2 : sys_tick / SysTick_Handler moved to rtos.c.          ✓
  * Phase 3-4: RTOS starts here — two tasks, context switching live.  ✓
  * Phase 5 : Real osDelay() — tasks genuinely sleep; idle task added. ✓
+ * Phase 6 : Semaphores and mutexes implemented; demo added below.    ✓
  *
- * HOW TO VERIFY PHASE 5
+ * HOW TO VERIFY PHASE 6
  * ---------------------
- * Flash and observe PA5 (Nucleo green LED):
+ * Two new global counters are visible in the Live Expressions window:
  *
- *   task_led     : LED on → osDelay(500) → LED off → osDelay(500) → repeat
- *   task_counter : task2_counter++ → osDelay(10) → repeat
- *   task_idle    : __WFI() loop — runs only when both other tasks sleep
+ *   sem_signal_count  — incremented by task_led after each blink cycle
+ *   sem_consume_count — incremented by task_consumer each time it unblocks
  *
- * Expected observations (vs Phase 3-4):
- *   - LED still blinks at ~1 Hz; timing is now accurate without spinwait.
- *   - task2_counter increments ~100 times per second, NOT ~1000 times.
- *     In Phase 3-4 the spinwait kept the CPU busy so the counter ran fast;
- *     now the task genuinely sleeps for 10 ms between increments.
- *   - CPU current draw drops during idle periods — tasks yield the core.
+ * Expected observations:
+ *   - sem_signal_count and sem_consume_count stay in lock-step: for every
+ *     signal there is exactly one consume.  This proves the semaphore
+ *     correctly transfers ownership rather than losing or duplicating wakes.
+ *   - Both counters increment at ~1 Hz (one blink cycle = 1 second).
+ *   - task_consumer spends most of its time BLOCKED (not spinning) —
+ *     confirm by pausing the debugger: it should be parked at the
+ *     trigger_pendsv() call inside osSemaphoreWait().
+ *   - task2_counter still increments at ~100 Hz independently, proving
+ *     the semaphore path does not disturb the rest of the scheduler.
  */
 
 #include <stdint.h>
 #include "stm32c031c6.h"
 #include "scheduler.h"
 #include "rtos.h"
+#include "semaphore.h"      /* Phase 6: need full struct layout to allocate   */
 
 /* -------------------------------------------------------------------------
  * Forward declarations (defined in clock.c)
@@ -54,14 +59,22 @@ static void SysTick_Init(void)
 }
 
 /* =========================================================================
+ * Phase 6 — shared semaphore
+ *
+ * task_led signals this after each complete on/off cycle.
+ * task_consumer blocks on it and wakes exactly once per blink.
+ * ========================================================================= */
+static Semaphore_t sem_blink;               /* Binary-style: init count = 0  */
+volatile uint32_t  sem_signal_count  = 0U;  /* How many times led has signalled */
+volatile uint32_t  sem_consume_count = 0U;  /* How many times consumer woke up  */
+
+/* =========================================================================
  * Task stacks
  * ========================================================================= */
-static uint32_t task_led_stack  [TASK_STACK_WORDS_DEFAULT];  /* 256 B        */
-static uint32_t task_count_stack[TASK_STACK_WORDS_DEFAULT];  /* 256 B        */
-static uint32_t task_idle_stack [32U];                       /* 128 B — idle
-                                                              * only needs the
-                                                              * 16-word frame;
-                                                              * 32 gives margin*/
+static uint32_t task_led_stack     [TASK_STACK_WORDS_DEFAULT];  /* 256 B     */
+static uint32_t task_count_stack   [TASK_STACK_WORDS_DEFAULT];  /* 256 B     */
+static uint32_t task_consumer_stack[TASK_STACK_WORDS_DEFAULT];  /* 256 B     */
+static uint32_t task_idle_stack    [32U];                       /* 128 B     */
 
 /* =========================================================================
  * task_led
@@ -73,9 +86,15 @@ static void task_led(void)
 {
     while (1) {
         GPIO_SET(LED_PORT, LED_PIN);    /* LED on                            */
-        osDelay(500);                   /* 500 ms — scheduler runs task2 here*/
+        osDelay(500);
         GPIO_CLR(LED_PORT, LED_PIN);    /* LED off                           */
-        osDelay(500);                   /* 500 ms — scheduler runs task2 here*/
+        osDelay(500);
+
+        /* Phase 6: signal the consumer once per complete blink cycle.
+         * osSemaphoreSignal() either increments count (if consumer is not
+         * yet waiting) or directly wakes the blocked consumer task. */
+        sem_signal_count++;
+        osSemaphoreSignal(&sem_blink);
     }
 }
 
@@ -93,6 +112,21 @@ static void task_counter(void)
     while (1) {
         task2_counter++;
         osDelay(10);    /* yield for 10 ms between increments               */
+    }
+}
+
+/* =========================================================================
+ * task_consumer  (Phase 6)
+ *
+ * Blocks on sem_blink until task_led signals it after each blink cycle.
+ * Increments sem_consume_count on every wake — should stay equal to
+ * sem_signal_count in the Live Expressions window.
+ * ========================================================================= */
+static void task_consumer(void)
+{
+    while (1) {
+        osSemaphoreWait(&sem_blink);    /* Block until task_led signals      */
+        sem_consume_count++;            /* Prove we ran exactly once per blink*/
     }
 }
 
@@ -128,10 +162,14 @@ int main(void)
      * is safe to call before osTaskCreate(). */
     __CPSIE_I();
 
+    /* ---- Phase 6: init semaphore before tasks start ---- */
+    osSemaphoreInit(&sem_blink, 0);     /* Start at 0: consumer blocks first */
+
     /* ---- Create tasks ---- */
-    osTaskCreate("led",     task_led,     task_led_stack,   TASK_STACK_WORDS_DEFAULT, 1U);
-    osTaskCreate("counter", task_counter, task_count_stack, TASK_STACK_WORDS_DEFAULT, 1U);
-    osTaskCreate("idle",    task_idle,    task_idle_stack,  32U,                      0U);
+    osTaskCreate("led",      task_led,      task_led_stack,      TASK_STACK_WORDS_DEFAULT, 1U);
+    osTaskCreate("counter",  task_counter,  task_count_stack,    TASK_STACK_WORDS_DEFAULT, 1U);
+    osTaskCreate("consumer", task_consumer, task_consumer_stack, TASK_STACK_WORDS_DEFAULT, 1U);
+    osTaskCreate("idle",     task_idle,     task_idle_stack,     32U,                      0U);
 
     /* ---- Start the RTOS (never returns) ---- */
     osStart();

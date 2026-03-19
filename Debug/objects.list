@@ -3,6 +3,7 @@
 "./Src/main.o"
 "./Src/rtos.o"
 "./Src/scheduler.o"
+"./Src/semaphore.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32c031c6tx.o"
