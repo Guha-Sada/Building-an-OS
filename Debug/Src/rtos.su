@@ -1,8 +1,10 @@
 ../Inc/stm32c031c6.h:260:20:trigger_pendsv	8	static,ignoring_inline_asm
 ../Src/rtos.c:69:6:SysTick_Handler	16	static
-../Src/rtos.c:99:10:osGetTick	8	static
-../Src/rtos.c:123:6:osStart	8	static
-../Src/rtos.c:141:13:os_task_exit	8	static,ignoring_inline_asm
-../Src/rtos.c:185:13:os_task_stack_init	32	static
-../Src/rtos.c:223:6:osTaskCreate	32	static,ignoring_inline_asm
-../Src/rtos.c:294:6:osDelay	16	static,ignoring_inline_asm
+../Src/rtos.c:104:10:osGetTick	8	static
+../Src/rtos.c:128:6:osStart	8	static
+../Src/rtos.c:146:13:os_task_exit	8	static,ignoring_inline_asm
+../Src/rtos.c:190:13:os_task_stack_init	32	static
+../Src/rtos.c:237:6:osTaskCreate	32	static,ignoring_inline_asm
+../Src/rtos.c:310:6:osDelay	16	static,ignoring_inline_asm
+../Src/rtos.c:327:9:osGetTaskCount	8	static
+../Src/rtos.c:355:6:osGetTaskStats	32	static,ignoring_inline_asm

@@ -37,6 +37,13 @@
  *  Increase for tasks that call deeply or use large local arrays. */
 #define TASK_STACK_WORDS_DEFAULT    64U
 
+/** Sentinel word written to every unused stack word at task creation.
+ *  osGetTaskStats() scans from the bottom of the stack upward and counts
+ *  consecutive sentinel words to compute the high-water mark.
+ *  Value chosen to be visually obvious in a memory view and unlikely to
+ *  occur as legitimate stack data. */
+#define OS_STACK_SENTINEL   0xA5A5A5A5UL
+
 /* =========================================================================
  * Task state machine
  *
@@ -104,6 +111,10 @@ typedef struct TCB {
     uint8_t      _pad[3];       /*!< Explicit padding (keeps alignment tidy) */
 
     uint32_t     wake_tick;     /*!< sys_tick value at which sleeping wakes  */
+
+    /* ---- Runtime statistics (updated by SysTick_Handler / os_schedule) ---- */
+    uint32_t     run_ticks;     /*!< CPU time: SysTick periods this task ran */
+    uint32_t     run_count;     /*!< Times os_schedule() selected this task  */
 
     uint32_t    *stack_base;    /*!< Lowest address of the stack array       */
     uint32_t     stack_words;   /*!< Stack size in uint32_t words            */

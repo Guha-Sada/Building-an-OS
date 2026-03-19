@@ -106,6 +106,7 @@ void os_schedule(void)
                 current_task_index  = idx;
                 current_task        = &task_pool[idx];
                 current_task->state = TASK_RUNNING;
+                current_task->run_count++;
                 return;
             }
         }

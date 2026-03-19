@@ -14,6 +14,7 @@
 #define RTOS_H
 
 #include <stdint.h>
+#include "scheduler.h"     /* TaskState_t — needed by TaskStats_t below      */
 
 /* =========================================================================
  * Task API  (implemented in Src/rtos.c)
@@ -100,5 +101,46 @@ void osMutexRelease(Mutex_t *m);
  * @brief  Return the current SysTick counter (milliseconds since osStart).
  */
 uint32_t osGetTick(void);
+
+/* =========================================================================
+ * Runtime statistics API  (implemented in Src/rtos.c)
+ * ========================================================================= */
+
+/**
+ * @brief  Snapshot of one task's runtime statistics.
+ *
+ * Obtain by calling osGetTaskStats().  All fields are consistent with each
+ * other at the moment of the call (interrupts are briefly disabled).
+ *
+ * CPU percentage approximation (assuming SysTick at 1 kHz):
+ *   cpu_pct = (stats.run_ticks * 100U) / osGetTick();
+ *
+ * Stack margin in words (how many words remain before overflow):
+ *   margin  = stats.stack_total_words - stats.stack_hwm_words;
+ */
+typedef struct {
+    const char  *name;              /*!< Task name string (not copied)        */
+    TaskState_t  state;             /*!< Current task state                   */
+    uint8_t      priority;          /*!< Scheduling priority (0 = lowest)     */
+    uint32_t     run_ticks;         /*!< SysTick periods charged to this task */
+    uint32_t     run_count;         /*!< Times selected by os_schedule()      */
+    uint32_t     stack_hwm_words;   /*!< Max stack words ever in use          */
+    uint32_t     stack_total_words; /*!< Total stack allocation in words      */
+} TaskStats_t;
+
+/**
+ * @brief  Fill *out with a stats snapshot for the task at index task_idx.
+ *
+ * @param  task_idx   0-based task index (0 … osGetTaskCount()-1)
+ * @param  out        Caller-allocated TaskStats_t to fill
+ *
+ * Does nothing if task_idx is out of range or out is NULL.
+ */
+void osGetTaskStats(uint8_t task_idx, TaskStats_t *out);
+
+/**
+ * @brief  Return the number of tasks created so far.
+ */
+uint8_t osGetTaskCount(void);
 
 #endif /* RTOS_H */

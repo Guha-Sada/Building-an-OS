@@ -88,6 +88,11 @@ void SysTick_Handler(void)
      * rtos_started is 0 until the very first PendSV sets it, so we never
      * touch PendSV before the RTOS bootstrap completes in _rtos_start(). */
     if (rtos_started) {
+        /* Charge one tick to whichever task was running when SysTick fired.
+         * current_task is valid once rtos_started is set (first PendSV has
+         * completed and restored a real task). */
+        current_task->run_ticks++;
+
         trigger_pendsv();
     }
 }
@@ -187,8 +192,17 @@ static void os_task_stack_init(TCB_t    *tcb,
                                 uint32_t *stack,
                                 uint32_t  stack_words)
 {
+    /* Paint the entire stack array with the sentinel word so that
+     * osGetTaskStats() can measure the high-water mark at any time by
+     * scanning upward from stack_base[0] for the first non-sentinel word. */
+    for (uint32_t i = 0U; i < stack_words; i++) {
+        stack[i] = OS_STACK_SENTINEL;
+    }
+
     /* sp starts at the top of the stack array (highest address + 1 word).
-     * Each *(--sp) = x  pre-decrements before writing (simulates PUSH). */
+     * Each *(--sp) = x  pre-decrements before writing (simulates PUSH).
+     * These writes overwrite the sentinel in the top 16 words, which is
+     * correct — the init frame IS the initial stack content. */
     uint32_t *sp = stack + stack_words;
 
     /* ---- Hardware exception frame (filled top-down) ---- */
@@ -251,6 +265,8 @@ void osTaskCreate(const char *name,
     tcb->state       = TASK_READY;
     tcb->priority    = priority;
     tcb->wake_tick   = 0U;
+    tcb->run_ticks   = 0U;
+    tcb->run_count   = 0U;
     tcb->stack_base  = stack;
     tcb->stack_words = stack_words;
 
@@ -303,4 +319,67 @@ void osDelay(uint32_t ticks)
     __CPSIE_I();                                /* --- critical section close */
 
     trigger_pendsv();   /* Yield immediately; we resume here when we wake     */
+}
+
+/* =========================================================================
+ * osGetTaskCount
+ * ========================================================================= */
+uint8_t osGetTaskCount(void)
+{
+    return task_count;
+}
+
+/* =========================================================================
+ * osGetTaskStats
+ *
+ * Fills *out with a consistent snapshot of task_idx's statistics.
+ *
+ * STACK HIGH-WATER MARK
+ * ---------------------
+ * At task creation the entire stack array is painted with OS_STACK_SENTINEL.
+ * The stack grows downward (SP decrements), so the lowest-address words are
+ * the last to be touched.  We scan from stack_base[0] upward and count how
+ * many words are still sentinel — the rest have been used.
+ *
+ *   stack_base[0]  ← first word ever touched if stack overflows (danger!)
+ *   stack_base[k]  ← deepest SP reached (first non-sentinel from bottom)
+ *   stack_base[N-16] … [N-1] ← initial exception frame (always non-sentinel)
+ *
+ * stack_hwm_words = stack_words − (number of leading sentinel words)
+ *
+ * Note: interrupts are NOT disabled during the HWM scan.  The sentinel
+ * words closest to the bottom are only written on deep call chains, so a
+ * mid-scan race is harmless — the worst case is a one-tick stale value.
+ * The run_ticks/run_count snapshot IS taken under CPSID I for consistency.
+ * ========================================================================= */
+void osGetTaskStats(uint8_t task_idx, TaskStats_t *out)
+{
+    if ((task_idx >= task_count) || (out == NULL)) {
+        return;
+    }
+
+    TCB_t *t = &task_pool[task_idx];
+
+    /* Snapshot the tick-updated fields atomically */
+    __CPSID_I();
+    out->run_ticks = t->run_ticks;
+    out->run_count = t->run_count;
+    out->state     = t->state;
+    __CPSIE_I();
+
+    /* Copy fields that don't change after creation */
+    out->name              = t->name;
+    out->priority          = t->priority;
+    out->stack_total_words = t->stack_words;
+
+    /* High-water mark: count consecutive sentinel words from the bottom */
+    uint32_t unused = 0U;
+    for (uint32_t i = 0U; i < t->stack_words; i++) {
+        if (t->stack_base[i] == OS_STACK_SENTINEL) {
+            unused++;
+        } else {
+            break;  /* First non-sentinel = deepest SP ever reached          */
+        }
+    }
+    out->stack_hwm_words = t->stack_words - unused;
 }
