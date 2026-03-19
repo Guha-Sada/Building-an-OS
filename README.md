@@ -1,4 +1,4 @@
-The goal of this project is to learn how an OS interacts with an Embedded System. A secondary goal is to get comfortable using Claude. I am coming into this project with a working knowledge of the Linux Kernel.
+The goal of this project is to learn how an OS interacts with an Embedded System using the STM32Cube IDE and it's inbuilt Debugger. A secondary goal is to get comfortable using Claude. I am coming into this project with a working knowledge of the Linux Kernel.
 
 After creating a plan with Claude, this is the targetted directory structure:
 ```
