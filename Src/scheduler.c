@@ -47,7 +47,7 @@ void os_schedule(void)
     /* Round-robin search: start one slot after the current task, wrap at
      * task_count.  We scan at most task_count slots (a full circle). */
     for (uint8_t i = 1U; i <= task_count; i++) {
-        uint8_t idx (uint8_t)((current_task_index + i) % task_count);
+        uint8_t idx = (uint8_t)((current_task_index + i) % task_count);
 
         if (task_pool[idx].state == TASK_READY) {
             current_task_index = idx;

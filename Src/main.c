@@ -4,31 +4,23 @@
  *
  * Phase 1 : clock init, GPIO, SysTick, LED blink verification.  ✓
  * Phase 2 : sys_tick / SysTick_Handler moved to rtos.c.          ✓
- * Phase 3-4: RTOS starts here — two tasks, context switching live.
+ * Phase 3-4: RTOS starts here — two tasks, context switching live.  ✓
+ * Phase 5 : Real osDelay() — tasks genuinely sleep; idle task added. ✓
  *
- * HOW TO VERIFY PHASE 3-4
- * -----------------------
+ * HOW TO VERIFY PHASE 5
+ * ---------------------
  * Flash and observe PA5 (Nucleo green LED):
  *
- *   task_led  : LED on  → osDelay(500) → LED off → osDelay(500)  → repeat
- *   task_count: increments a global counter every ~10 ms
+ *   task_led     : LED on → osDelay(500) → LED off → osDelay(500) → repeat
+ *   task_counter : task2_counter++ → osDelay(10) → repeat
+ *   task_idle    : __WFI() loop — runs only when both other tasks sleep
  *
- * Expected observations:
- *   - LED blinks at ~1 Hz (500 ms on, 500 ms off).
- *     Proves task_led is being scheduled and context-switched correctly.
- *
- *   - task2_counter increments in the background while task_led is delaying.
- *     Probe it in the debugger (Live Expressions / Watch window) — it should
- *     increment ~100 times per second even while task_led is "sleeping".
- *     Proves the scheduler runs task2 during task_led's delay periods.
- *
- * NOTE ON osDelay() IN THIS PHASE
- * --------------------------------
- * osDelay() is still a spinwait (Phase 5 replaces it with a real sleep).
- * The tasks still get preempted every 1 ms by PendSV, so both run
- * concurrently in 1 ms round-robin slices.  The delay durations are correct
- * (they track wall-clock time via sys_tick) but CPU is not yielded — that
- * improvement comes in Phase 5.
+ * Expected observations (vs Phase 3-4):
+ *   - LED still blinks at ~1 Hz; timing is now accurate without spinwait.
+ *   - task2_counter increments ~100 times per second, NOT ~1000 times.
+ *     In Phase 3-4 the spinwait kept the CPU busy so the counter ran fast;
+ *     now the task genuinely sleeps for 10 ms between increments.
+ *   - CPU current draw drops during idle periods — tasks yield the core.
  */
 
 #include <stdint.h>
@@ -62,10 +54,14 @@ static void SysTick_Init(void)
 }
 
 /* =========================================================================
- * Task stacks  (static, 256 bytes each = 64 words)
+ * Task stacks
  * ========================================================================= */
-static uint32_t task_led_stack  [TASK_STACK_WORDS_DEFAULT];
-static uint32_t task_count_stack[TASK_STACK_WORDS_DEFAULT];
+static uint32_t task_led_stack  [TASK_STACK_WORDS_DEFAULT];  /* 256 B        */
+static uint32_t task_count_stack[TASK_STACK_WORDS_DEFAULT];  /* 256 B        */
+static uint32_t task_idle_stack [32U];                       /* 128 B — idle
+                                                              * only needs the
+                                                              * 16-word frame;
+                                                              * 32 gives margin*/
 
 /* =========================================================================
  * task_led
@@ -101,6 +97,23 @@ static void task_counter(void)
 }
 
 /* =========================================================================
+ * task_idle
+ *
+ * Runs when every other task is SLEEPING or BLOCKED.  Must never call
+ * osDelay() or any blocking primitive — it must always remain READY.
+ *
+ * __WFI() halts the CPU clock until the next interrupt (SysTick at 1 kHz),
+ * reducing power consumption without affecting scheduler correctness: PendSV
+ * fires as normal when SysTick_Handler runs and wakes a sleeping task.
+ * ========================================================================= */
+static void task_idle(void)
+{
+    while (1) {
+        __WFI();    /* Low-power wait; SysTick wakes us every 1 ms at most   */
+    }
+}
+
+/* =========================================================================
  * main
  * ========================================================================= */
 int main(void)
@@ -118,6 +131,7 @@ int main(void)
     /* ---- Create tasks ---- */
     osTaskCreate("led",     task_led,     task_led_stack,   TASK_STACK_WORDS_DEFAULT, 1U);
     osTaskCreate("counter", task_counter, task_count_stack, TASK_STACK_WORDS_DEFAULT, 1U);
+    osTaskCreate("idle",    task_idle,    task_idle_stack,  32U,                      0U);
 
     /* ---- Start the RTOS (never returns) ---- */
     osStart();

@@ -70,15 +70,16 @@ void SysTick_Handler(void)
 {
     sys_tick++;
 
-    /* Phase 5: wake sleeping tasks — uncomment when osDelay() is real.
-     *
-     *  for (uint8_t i = 0; i < task_count; i++) {
-     *      if (task_pool[i].state == TASK_SLEEPING &&
-     *          (sys_tick - task_pool[i].wake_tick) < 0x80000000UL) {
-     *          task_pool[i].state = TASK_READY;
-     *      }
-     *  }
-     */
+    /* Wake any task whose sleep period has expired.
+     * Unsigned subtraction handles sys_tick wraparound correctly:
+     * casting to int32_t gives a negative result while wake_tick is still
+     * in the future, and a non-negative result once it has been reached. */
+    for (uint8_t i = 0U; i < task_count; i++) {
+        if (task_pool[i].state == TASK_SLEEPING &&
+            (int32_t)(sys_tick - task_pool[i].wake_tick) >= 0) {
+            task_pool[i].state = TASK_READY;
+        }
+    }
 
     /* Trigger a context switch at the end of every 1 ms time-slice.
      * PendSV is at the lowest interrupt priority (0xC0) so it fires only
@@ -267,29 +268,39 @@ void osTaskCreate(const char *name,
 }
 
 /* =========================================================================
- * osDelay  (Phase 3-4: still a spinwait — upgrade in Phase 5)
+ * osDelay  (Phase 5: real cooperative sleep)
  *
- * CURRENT BEHAVIOUR: busy-wait.  The calling task monopolises the CPU for
- * the entire delay.  Interrupts remain enabled so SysTick still fires.
+ * Puts the calling task to sleep for exactly `ticks` milliseconds.
  *
- * PHASE 5 REPLACEMENT: set state = TASK_SLEEPING, set wake_tick, trigger
- * PendSV immediately so another READY task runs during the delay.
+ * HOW IT WORKS
+ * ------------
+ * 1. Interrupts are disabled briefly while we write to the TCB.
+ * 2. wake_tick is set to the future tick at which the task should wake.
+ * 3. state is set to TASK_SLEEPING so os_schedule() skips this task.
+ * 4. Interrupts are re-enabled and PendSV is pended immediately.
+ * 5. Since this task is now SLEEPING, os_schedule() will run the next
+ *    READY task (or the idle task if no other task is ready).
+ * 6. Every millisecond, SysTick_Handler scans for tasks whose wake_tick
+ *    has been reached and flips them back to TASK_READY.
+ * 7. On the next PendSV after the task becomes READY, os_schedule()
+ *    selects it and execution resumes at the trigger_pendsv() return site,
+ *    then falls through to the end of osDelay() — returning to the caller.
+ *
+ * TICK COMPARISON
+ * ---------------
+ * (int32_t)(sys_tick - wake_tick) >= 0  handles the uint32_t wraparound
+ * that occurs after ~49.7 days of continuous running.
  * ========================================================================= */
 void osDelay(uint32_t ticks)
 {
-    /*
-     * TODO Phase 5: replace the body below with:
-     *
-     *   __CPSID_I();
-     *   current_task->wake_tick = sys_tick + ticks;
-     *   current_task->state     = TASK_SLEEPING;
-     *   __CPSIE_I();
-     *   trigger_pendsv();
-     *   // PendSV will context-switch us out; we return here when we wake.
-     */
-    uint32_t start = sys_tick;
-    while ((sys_tick - start) < ticks) {
-        /* Interrupts are enabled so SysTick advances sys_tick normally.
-         * This is a spinwait and blocks other tasks — temporary until Phase 5. */
+    if (ticks == 0U) {
+        return;     /* Nothing to do; avoid immediately marking self SLEEPING */
     }
+
+    __CPSID_I();                                /* --- critical section open  */
+    current_task->wake_tick = sys_tick + ticks;
+    current_task->state     = TASK_SLEEPING;
+    __CPSIE_I();                                /* --- critical section close */
+
+    trigger_pendsv();   /* Yield immediately; we resume here when we wake     */
 }
